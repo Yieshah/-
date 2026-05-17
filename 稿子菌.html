@@ -1,0 +1,2137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="稿子菌">
+<title>稿子菌 v7.2 · 学术投稿管理</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧫</text></svg>">
+<link href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+<style>
+:root{--bg:#f5f3f0;--card:#fff;--border:#e4e0db;--text:#1c1917;--t2:#57534e;--t3:#a8a29e;--ibg:#fafaf9;--ac:#7c3aed;--ac-rev:#059669;--r:10px;--sh:0 1px 3px rgba(28,25,23,.06),0 6px 16px rgba(28,25,23,.04);--shl:0 8px 40px rgba(28,25,23,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'LXGW WenKai',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased;font-size:16px}
+.header{background:linear-gradient(160deg,#1c1917 0%,#292524 60%,#44403c 100%);color:#fff;padding:26px 20px 20px;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:-40%;right:-10%;width:300px;height:300px;background:radial-gradient(circle,rgba(124,58,237,.25) 0%,transparent 70%);pointer-events:none}
+.hi{max-width:1400px;margin:0 auto;position:relative;z-index:1;padding:0 16px}
+.ha{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.header h1{font-size:28px;font-weight:900;letter-spacing:-.5px;display:flex;align-items:center;gap:8px}
+.header p{margin:3px 0 0;font-size:14px;opacity:.55}
+.hb{display:flex;gap:7px;flex-shrink:0;align-items:center;flex-wrap:wrap}
+.hbtn{padding:10px 20px;border-radius:10px;border:1.5px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;font-size:15px;font-weight:700;cursor:pointer;backdrop-filter:blur(8px);transition:all .2s;font-family:inherit;display:flex;align-items:center;gap:5px}
+.hbtn:hover{background:rgba(255,255,255,.18)}
+.hbtn.warn{border-color:rgba(251,191,36,.4);background:rgba(251,191,36,.12)}
+.hbtn.rev{background:rgba(5,150,105,.2)}
+.sr{display:flex;gap:5px;flex-wrap:wrap;margin-top:12px}
+.sc{padding:4px 10px;border-radius:7px;background:rgba(255,255,255,.08);font-size:13px;font-weight:500;display:flex;align-items:center;gap:4px;white-space:nowrap}
+.sc b{background:rgba(255,255,255,.15);padding:1px 6px;border-radius:8px;font-size:10px;font-weight:800}
+.tabs{max-width:1400px;margin:0 auto;padding:12px 16px 0;display:flex;gap:4px;border-bottom:1px solid var(--border);align-items:center}
+.tab{padding:8px 16px;border:none;background:none;font-size:15px;font-weight:600;color:var(--t3);cursor:pointer;font-family:inherit;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s}
+.tab.ac{color:var(--ac);border-bottom-color:var(--ac)}
+.tab.ac-rev{color:var(--ac-rev);border-bottom-color:var(--ac-rev)}
+.tab:hover{color:var(--t2)}
+.tab-main{font-size:16px;padding:8px 16px}
+.tb{max-width:1400px;margin:0 auto;padding:10px 16px 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.sbox{flex:1;min-width:140px;position:relative}
+.sbox .ic{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;opacity:.35;pointer-events:none}
+.sbox input{width:100%;padding:8px 12px 8px 32px;border-radius:var(--r);border:1px solid var(--border);background:var(--card);font-size:15px;color:var(--text);outline:none;font-family:inherit}
+.sbox input:focus{border-color:var(--ac)}
+.gtog{display:flex;border-radius:var(--r);border:1px solid var(--border);overflow:hidden}
+.gtog button{padding:7px 12px;border:none;background:var(--card);color:var(--t2);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+.gtog button.ac{background:var(--ac);color:#fff}
+.gtog button.ac-rev{background:var(--ac-rev);color:#fff}
+.gtog button:not(:last-child){border-right:1px solid var(--border)}
+
+.ct{max-width:1400px;margin:0 auto;padding:12px 16px 60px}
+.gsec{margin-bottom:24px;animation:fu .3s ease both}
+@keyframes fu{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.gh{display:flex;align-items:center;gap:7px;margin-bottom:9px;padding-bottom:6px;border-bottom:2px solid var(--border)}
+.gh .em{font-size:17px}.gh .lb{font-size:15px;font-weight:700}
+.gh .cn{font-size:12px;font-weight:800;padding:2px 8px;border-radius:10px}
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px}
+.pc{background:var(--card);border-radius:12px;border:1px solid var(--border);padding:18px 20px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.pc:hover{box-shadow:var(--sh);transform:translateY(-1px)}
+.pc.dimmed{opacity:.6;background:#f8f9fa;order:999}
+.pc .ab{position:absolute;top:0;left:0;right:0;height:3px;border-radius:11px 11px 0 0}
+.ctop{display:flex;justify-content:space-between;align-items:flex-start;gap:7px;margin-bottom:4px}
+.ctt{font-size:16px;font-weight:700;line-height:1.4;flex:1;word-break:break-word}
+.rtag{display:inline-block;padding:3px 8px;border-radius:4px;font-size:11px;font-weight:700;white-space:nowrap;flex-shrink:0}
+.cjn{font-size:14px;color:var(--t2);font-style:italic;margin-bottom:8px}
+.sbdg{display:inline-flex;align-items:center;gap:3px;padding:3px 10px;border-radius:20px;font-size:13px;font-weight:600;white-space:nowrap}
+.cbot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:5px}
+.qbs{display:flex;gap:3px;flex-wrap:wrap}
+.qb{background:none;border:1px solid var(--border);border-radius:5px;padding:3px 5px;font-size:11px;cursor:pointer;opacity:.35;transition:all .15s;line-height:1}
+.qb:hover{opacity:1}
+.clk{display:inline-flex;align-items:center;gap:3px;margin-top:6px;font-size:13px;color:var(--ac);text-decoration:none;opacity:.7}
+.clk:hover{opacity:1}
+.cmeta{font-size:12.5px;color:var(--t3);margin-top:4px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.cmeta .urgent{color:#ef4444;font-weight:600}
+.ctlm{margin-top:7px;padding-top:7px;border-top:1px dashed var(--border)}
+.ctlm .ev{font-size:11.5px;color:var(--t3);display:flex;align-items:center;gap:4px;padding:1px 0}
+.ctlm .ev .dot{width:4px;height:4px;border-radius:50%;flex-shrink:0}
+.pri{display:inline-flex;align-items:center;gap:1px;font-size:11px}
+.pri .star{color:#f59e0b;cursor:pointer}
+.pri .star.off{color:var(--border)}
+.hist-chain{margin-top:6px;display:flex;align-items:center;gap:3px;flex-wrap:wrap}
+.hist-link{font-size:11px;padding:2px 7px;border-radius:4px;background:#f1f5f9;color:#475569;border:1px solid #e2e8f0;text-decoration:none;cursor:pointer;display:flex;align-items:center;gap:2px;transition:all .15s}
+.hist-link:hover{border-color:var(--ac);color:var(--ac)}
+.hist-link.current{background:var(--ac);color:#fff;border-color:var(--ac);font-weight:700}
+.hist-arrow{color:var(--t3);font-size:10px}
+.round-badge{position:absolute;top:8px;right:10px;font-size:10px;font-weight:800;padding:2px 7px;border-radius:4px;background:rgba(124,58,237,.1);color:var(--ac)}
+.tags-row{display:flex;gap:3px;flex-wrap:wrap;margin-top:5px}
+.tag-sm{font-size:11px;padding:2px 6px;border-radius:3px;background:#f1f5f9;color:#475569;border:1px solid #e2e8f0}
+.ep{text-align:center;padding:50px 20px;color:var(--t3)}
+.ep .big{font-size:48px;margin-bottom:10px}
+.ep .mg{font-size:15px;font-weight:600;margin-bottom:4px;color:var(--t2)}
+.ep .su{font-size:14px}
+.mo{position:fixed;inset:0;background:rgba(28,25,23,.5);display:flex;align-items:center;justify-content:center;z-index:999;backdrop-filter:blur(4px);padding:10px;animation:fi .2s ease}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+.md{background:var(--card);border-radius:14px;width:100%;max-width:760px;max-height:92vh;overflow:auto;padding:28px;box-shadow:var(--shl);animation:su .25s ease}
+@keyframes su{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.mh h2{font-size:20px;font-weight:800}
+.xbtn{background:none;border:none;font-size:18px;cursor:pointer;color:var(--t3);padding:4px}
+.fg{margin-bottom:11px}
+.fl{display:block;font-size:11px;font-weight:700;color:var(--t2);margin-bottom:3px;text-transform:uppercase;letter-spacing:.3px}
+.fi{width:100%;padding:8px 12px;border-radius:7px;border:1px solid var(--border);background:var(--ibg);color:var(--text);font-size:15px;outline:none;font-family:inherit;transition:border .15s}
+.fi:focus{border-color:var(--ac)}.fi.rev:focus{border-color:var(--ac-rev)}
+textarea.fi{resize:vertical;min-height:42px}
+.fr{display:flex;gap:10px}.fr>*{flex:1}.fr .nw{flex:0 0 140px}.fr .nw2{flex:0 0 100px}
+.so{display:flex;gap:4px;flex-wrap:wrap}
+.sop{padding:6px 10px;border-radius:7px;border:1px solid var(--border);background:transparent;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;font-family:inherit;display:flex;align-items:center;gap:3px;color:var(--t2)}
+.sop.ac{border-width:2px;font-weight:700}
+.mf{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
+.bdel{padding:7px 14px;border-radius:7px;border:1px solid #fca5a5;background:#fef2f2;color:#dc2626;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit}
+.bcan{padding:7px 16px;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--t2);font-size:13px;cursor:pointer;font-family:inherit}
+.bsav{padding:7px 20px;border-radius:7px;border:none;background:var(--ac);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 2px 6px rgba(124,58,237,.25)}
+.bsav:hover{background:#6d28d9}
+.bsav.rev{background:var(--ac-rev);box-shadow:0 2px 6px rgba(5,150,105,.25)}
+.bsav.rev:hover{background:#047857}
+.tls{margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
+.tls h3{font-size:14px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.tl-add{display:flex;gap:6px;margin-bottom:10px;align-items:flex-end;flex-wrap:wrap}
+.tl-add .fg{margin-bottom:0}
+.tl-list{position:relative;padding-left:16px}
+.tl-list::before{content:'';position:absolute;left:4px;top:3px;bottom:3px;width:2px;background:var(--border);border-radius:1px}
+.tl-ev{position:relative;padding:4px 0 8px 10px;font-size:13px}
+.tl-ev .dot{position:absolute;left:-16px;top:7px;width:9px;height:9px;border-radius:50%;border:2px solid var(--card)}
+.tl-ev .date{color:var(--t3);font-size:11.5px;margin-bottom:1px}
+.tl-ev .label{font-weight:600;color:var(--text)}
+.tl-ev .note{color:var(--t2);font-size:12px;margin-top:1px}
+.tl-ev .del-ev{position:absolute;right:0;top:4px;background:none;border:none;font-size:14px;color:#ef4444;cursor:pointer;opacity:0.7;transition:opacity .15s;padding:4px 8px}
+.tl-ev:hover .del-ev,.tl-ev .del-ev:active{opacity:1}
+.hist-sec{margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
+.hist-sec h3{font-size:14px;font-weight:700;margin-bottom:8px}
+.cs-row{display:flex;gap:5px;flex-wrap:wrap}
+.cs-tag{padding:3px 8px;border-radius:5px;font-size:12px;font-weight:600;background:var(--ibg);border:1px solid var(--border);color:var(--t2);display:flex;align-items:center;gap:3px}
+.cs-tag .x{cursor:pointer;opacity:.5;font-size:9px}
+.cs-tag .x:hover{opacity:1}
+.cs-add{padding:3px 8px;border-radius:5px;font-size:12px;border:1px dashed var(--border);background:none;color:var(--t3);outline:none;font-family:inherit;width:100px}
+.cs-add:focus{border-color:var(--ac);color:var(--text)}
+
+.det-hd{padding:18px;background:var(--card);border-radius:11px;border:1px solid var(--border);margin-bottom:14px}
+.det-hd .bk{font-size:14px;color:var(--ac);cursor:pointer;display:inline-flex;align-items:center;gap:3px;margin-bottom:8px;font-weight:600;border:1px solid var(--ac);padding:5px 14px;border-radius:6px;background:rgba(124,58,237,.05)}
+.det-hd h2{font-size:22px;font-weight:800;margin-bottom:4px}
+.det-hd .meta{font-size:13.5px;color:var(--t2);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.det-tl{background:var(--card);border-radius:11px;border:1px solid var(--border);padding:18px}
+.det-tl h3{font-size:15px;font-weight:700;margin-bottom:12px}
+.ftl{position:relative;padding-left:22px}
+.ftl::before{content:'';position:absolute;left:7px;top:5px;bottom:5px;width:2px;background:linear-gradient(to bottom,var(--ac),var(--border));border-radius:1px}
+.ftl .ev{position:relative;padding:6px 0 14px 14px}
+.ftl .ev .dot{position:absolute;left:-22px;top:9px;width:12px;height:12px;border-radius:50%;border:2.5px solid var(--card);box-shadow:0 0 0 1px var(--border)}
+.ftl .ev .date{font-size:12px;color:var(--t3);margin-bottom:2px;font-weight:500}
+.ftl .ev .label{font-size:15px;font-weight:700}
+.ftl .ev .note{font-size:13px;color:var(--t2);margin-top:2px;line-height:1.4}
+.ftl .ev .dur{font-size:11px;color:var(--t3);margin-top:3px;font-style:italic}
+
+.dash{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-bottom:18px}
+.dash-c{background:var(--card);border-radius:9px;border:1px solid var(--border);padding:10px 8px;text-align:center}
+.dash-c .num{font-size:28px;font-weight:900;color:var(--ac);line-height:1}
+.dash-c .num.rev{color:var(--ac-rev)}
+.dash-c .lbl{font-size:12px;color:var(--t2);margin-top:3px;font-weight:600;white-space:nowrap}
+.chart-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:18px;margin-bottom:20px}
+.chart-box{background:var(--card);border-radius:11px;border:1px solid var(--border);padding:16px}
+.chart-box h4{font-size:13px;font-weight:700;color:var(--t2);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
+.chart-container{position:relative;height:240px}
+
+.cact{display:flex;gap:4px;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);justify-content:space-between;align-items:center}
+.cact-left{display:flex;gap:4px}
+.cact-btn{font-size:11.5px;padding:4px 10px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--t2);cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:3px}
+.cact-btn:hover{background:var(--ibg);border-color:var(--ac);color:var(--ac)}
+.cact-btn.rev:hover{border-color:var(--ac-rev);color:var(--ac-rev)}
+.cact-del{color:#dc2626;border-color:#fca5a5;background:#fef2f2}
+.cact-del:hover{background:#fee2e2;border-color:#dc2626;color:#dc2626}
+.tag-stack{display:flex;flex-direction:column;gap:2px;align-items:flex-end}
+
+.backup-bar{max-width:1400px;margin:8px auto 0;padding:0 16px}
+.backup-banner{padding:10px 16px;border-radius:8px;background:#fffbeb;border:1px solid #fde68a;display:flex;align-items:center;gap:8px;font-size:13px;color:#92400e;font-weight:500}
+.backup-banner b{font-weight:700}
+.backup-banner .bbtn{margin-left:auto;padding:5px 14px;border-radius:6px;border:1px solid #fbbf24;background:#fef3c7;color:#92400e;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;flex-shrink:0}
+.backup-banner .dismiss{cursor:pointer;opacity:.5;font-size:12px;flex-shrink:0}
+.backup-banner .dismiss:hover{opacity:1}
+
+.filt-console{background:var(--card);border-radius:11px;border:1px solid var(--border);padding:14px;margin:0 0 16px 0;display:flex;gap:12px;flex-wrap:wrap;align-items:end}
+.filt-grp{flex:1;min-width:140px;max-width:200px}
+.filt-grp label{font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px;display:block}
+.filt-grp select,.filt-grp input{width:100%;padding:7px 10px;border-radius:6px;border:1px solid var(--border);font-family:inherit;font-size:13px;background:var(--ibg)}
+
+.select-mode-bar{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;justify-content:space-between;align-items:center;margin:0 -20px 10px}
+.select-count{font-size:14px;font-weight:600}
+.select-actions{display:flex;gap:8px}
+.pc-select{position:absolute;top:8px;left:8px;z-index:10}
+.pc-checkbox{width:18px;height:18px;cursor:pointer;accent-color:var(--ac)}
+.ebtn{padding:5px 12px;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--t2);font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s}
+.ebtn:hover{border-color:var(--ac);color:var(--ac)}
+
+/* 文件模块 */
+.file-row{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--ibg);border:1px solid var(--border);border-radius:7px;margin-bottom:6px;font-size:13px}
+.file-icon{font-size:18px;flex-shrink:0}
+.file-info{flex:1}
+.file-info .fn{font-weight:600;font-size:13px}
+.file-info .fm{font-size:11px;color:var(--t3);margin-top:1px}
+.file-actions{display:flex;gap:4px}
+.file-badge{font-size:10px;padding:2px 7px;border-radius:3px;font-weight:600}
+
+/* 提醒模块 */
+.reminder-card{background:var(--card);border-radius:10px;border:1px solid #fde68a;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:12px}
+.reminder-card.critical{border-color:#fca5a5;background:#fef2f2}
+.reminder-icon{font-size:24px;flex-shrink:0}
+.reminder-body{flex:1}
+.reminder-body .rt{font-size:15px;font-weight:700;margin-bottom:2px}
+.reminder-body .rd{font-size:13px;color:var(--t2)}
+.reminder-actions{display:flex;gap:6px;flex-shrink:0}
+.reminder-tag{font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600}
+.rem-conf{background:var(--card);border-radius:11px;border:1px solid var(--border);padding:16px;margin-bottom:16px}
+.rem-conf h4{font-size:15px;font-weight:700;margin-bottom:10px}
+.rem-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:13px}
+.rem-row input[type="number"]{width:60px;padding:5px 7px;border-radius:5px;border:1px solid var(--border);font-family:inherit;font-size:13px;text-align:center}
+.rem-toggle{position:relative;width:40px;height:22px;cursor:pointer}
+.rem-toggle input{display:none}
+.rem-toggle .slider{position:absolute;inset:0;background:#e4e0db;border-radius:11px;transition:.2s}
+.rem-toggle input:checked+.slider{background:var(--ac)}
+.rem-toggle .slider::after{content:'';position:absolute;top:2px;left:2px;width:18px;height:18px;background:#fff;border-radius:50%;transition:.2s}
+.rem-toggle input:checked+.slider::after{transform:translateX(18px)}
+
+/* 投稿进度 */
+.progress-paper-select{background:var(--card);border-radius:11px;border:1px solid var(--border);padding:16px;margin-bottom:16px}
+.progress-paper-select select{width:100%;padding:10px 14px;border-radius:8px;border:1px solid var(--border);font-family:inherit;font-size:15px;background:var(--ibg);color:var(--text);outline:none}
+.progress-paper-select select:focus{border-color:var(--ac)}
+.progress-timeline{background:var(--card);border-radius:11px;border:1px solid var(--border);padding:20px}
+.progress-timeline h3{font-size:16px;font-weight:700;margin-bottom:4px}
+.progress-timeline .sub{font-size:13px;color:var(--t2);margin-bottom:14px}
+.prog-ev{position:relative;padding:10px 0 16px 24px;border-left:2.5px solid var(--border);margin-left:10px;display:flex;gap:12px}
+.prog-ev:last-child{border-left-color:transparent}
+.prog-ev .dot{position:absolute;left:-9px;top:13px;width:16px;height:16px;border-radius:50%;border:3px solid var(--card);box-shadow:0 0 0 2px;z-index:1}
+.prog-ev-main{flex:1;min-width:0}
+.prog-ev .date{font-size:12px;color:var(--t3);font-weight:500;margin-bottom:2px}
+.prog-ev .label{font-size:16px;font-weight:700;margin-bottom:2px}
+.prog-ev .note{font-size:13px;color:var(--t2);margin-bottom:6px;line-height:1.4}
+.prog-ev .dur{font-size:11px;color:var(--t3);font-style:italic;margin-bottom:8px}
+.prog-ev-files{width:200px;min-width:160px;padding:8px 10px;background:var(--ibg);border-radius:8px;border:1px solid var(--border);font-size:11px;align-self:flex-start;margin-top:2px}
+.prog-ev-files .pf-title{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border)}
+.prog-ev-files .pf-item{display:flex;align-items:center;gap:4px;padding:3px 0;color:var(--t2);cursor:default;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prog-ev-files .pf-item[onclick]{cursor:pointer;border-radius:4px;padding:3px 4px;margin:0 -4px}
+.prog-ev-files .pf-item[onclick]:hover{background:var(--border)}
+.prog-ev-files .pf-item .pf-icon{flex-shrink:0}
+.prog-ev-files .pf-item .pf-name{overflow:hidden;text-overflow:ellipsis}
+.prog-ev-files .pf-empty{color:var(--t3);font-size:10px;padding:4px 0;text-align:center}
+.prog-upload-btns{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;padding-top:6px;border-top:1px dashed var(--border)}
+.prog-up-btn{padding:4px 10px;border-radius:5px;border:1px solid var(--border);background:var(--ibg);font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;color:var(--t2)}
+.prog-up-btn.comment{border-color:#7c3aed;color:#7c3aed;background:rgba(124,58,237,.08)}
+.prog-up-btn.comment:hover{background:rgba(124,58,237,.15)}
+.prog-up-btn.reply{border-color:#059669;color:#059669;background:rgba(5,150,105,.08)}
+.prog-up-btn.reply:hover{background:rgba(5,150,105,.15)}
+.prog-up-btn.manu{border-color:#d97706;color:#d97706;background:rgba(217,119,6,.08)}
+.prog-up-btn.manu:hover{background:rgba(217,119,6,.15)}
+.prog-up-btn.supp{border-color:#0891b2;color:#0891b2;background:rgba(8,145,178,.08)}
+.prog-up-btn.supp:hover{background:rgba(8,145,178,.15)}
+.prog-empty{text-align:center;padding:40px 20px;color:var(--t3)}
+.prog-empty .big{font-size:48px;margin-bottom:10px}
+.prog-empty .mg{font-size:15px;font-weight:600;margin-bottom:4px;color:var(--t2)}
+
+/* 评价模块 */
+.eval-card{background:var(--card);border-radius:10px;border:1px solid var(--border);padding:16px;margin-bottom:12px}
+.eval-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.eval-journal{font-size:16px;font-weight:700}
+.eval-if{font-size:12px;color:var(--t2)}
+.eval-section{margin-top:12px;padding-top:10px;border-top:1px solid var(--border)}
+.eval-section h5{font-size:12px;font-weight:700;color:var(--t2);margin-bottom:8px;text-transform:uppercase}
+.eval-note-item{padding:8px;background:var(--ibg);border-radius:6px;margin-bottom:6px;font-size:13px}
+.eval-note-item .src{font-size:11px;color:var(--t3);margin-top:3px}
+.tier-tag{padding:3px 8px;border-radius:4px;font-size:11px;font-weight:600;background:var(--ibg);border:1px solid var(--border);color:var(--t3);cursor:pointer;transition:all .15s;user-select:none}
+.tier-tag:hover{border-color:var(--ac);color:var(--ac)}
+.tier-tag.active{background:var(--ac);color:#fff;border-color:var(--ac)}
+.tier-tag-top{background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border:1px solid #f59e0b;color:#92400e;font-size:11px;font-weight:700;padding:3px 10px;border-radius:4px;box-shadow:0 1px 3px rgba(245,158,11,.25)}
+.tier-tag-top.active{background:linear-gradient(135deg,#fbbf24 0%,#f59e0b 100%);color:#fff;border-color:#f59e0b;box-shadow:0 1px 4px rgba(245,158,11,.4)}
+.rich-editor{border:1px solid var(--border);border-radius:7px;min-height:80px;padding:10px 12px;font-size:14px;outline:none;background:var(--ibg);font-family:inherit}
+.rich-editor:focus{border-color:var(--ac)}
+.rich-editor:empty::before{content:'输入你的评价...';color:var(--t3)}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:9px;font-size:15px;font-weight:600;font-family:inherit;z-index:9999;animation:ti .3s ease;box-shadow:0 4px 16px rgba(0,0,0,.12);white-space:nowrap;background:#dcfce7;color:#166534;border:1px solid #bbf7d0}
+.toast.error{background:#fee2e2;color:#991b1b;border-color:#fecaca}
+@keyframes ti{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+.repo-bar{max-width:1400px;margin:8px auto 0;padding:0 16px}
+.repo-banner{padding:8px 14px;border-radius:8px;display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:500;flex-wrap:wrap}
+.repo-banner.bound{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
+.repo-banner.unbound{background:#fffbeb;border:1px solid #fde68a;color:#92400e}
+.repo-name{font-weight:700;font-size:13px;display:flex;align-items:center;gap:4px}
+.repo-path{opacity:.6;font-size:11px}
+.repo-btn{margin-left:auto;padding:4px 12px;border-radius:6px;border:1px solid;background:transparent;font-size:11.5px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
+.repo-btn:hover{opacity:.8}
+.repo-btn.primary{background:var(--ac);color:#fff;border-color:var(--ac)}
+.repo-btn.primary:hover{background:#6d28d9}
+.repo-btn.sync{background:#dbeafe;color:#1e40af;border-color:#93c5fd}
+.repo-btn.import{background:#dcfce7;color:#166534;border-color:#86efac}
+.repo-btn.warn{background:#fef2f2;color:#dc2626;border-color:#fca5a5}
+.repo-btn.neutral{color:var(--t2);border-color:var(--border)}
+.repo-syncing{display:inline-flex;align-items:center;gap:4px;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.export-dd{position:relative;margin-left:auto}
+.export-dd-menu{position:absolute;top:calc(100% + 4px);right:0;background:#fff;border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.1);z-index:100;min-width:160px;overflow:hidden}
+.export-dd-item{padding:8px 14px;font-size:12.5px;cursor:pointer;transition:background .1s;color:var(--t2)}
+.export-dd-item:hover{background:#f5f3ff;color:var(--ac)}
+
+.site-footer{max-width:1400px;margin:40px auto 0;padding:20px 16px;text-align:center;font-size:12px;color:var(--t3);border-top:1px solid var(--border);line-height:1.6}
+
+@media(max-width:520px){
+  .header{padding:20px 12px 16px}.header h1{font-size:22px}
+  .tabs,.tb,.ct,.backup-bar{padding-left:12px;padding-right:12px}
+  .hi{padding:0 12px}
+  .cg{grid-template-columns:1fr}.fr{flex-direction:column;gap:10px}
+  .fr .nw,.fr .nw2{flex:1}.md{padding:18px 14px}
+  .hbtn{padding:7px 12px;font-size:11px}.qbs{display:none}
+  .dash{grid-template-columns:repeat(auto-fill,minmax(100px,1fr))}
+  .tl-add{flex-direction:column}
+  .filt-console{flex-direction:column}
+  .filt-grp{max-width:100%}
+  .reminder-card{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* ========== 稿子菌 v6.0 - 全功能学术投稿管理 ========== */
+Chart.register(ChartDataLabels);
+
+const ST=[{key:'preparing',label:'准备中',emoji:'📝',color:'#6366f1'},{key:'submitted',label:'已投稿',emoji:'📮',color:'#0ea5e9'},{key:'under_review',label:'审稿中',emoji:'🔬',color:'#f59e0b'},{key:'revision',label:'修回中',emoji:'🔧',color:'#a855f7'},{key:'accepted',label:'已录用',emoji:'🎉',color:'#22c55e'},{key:'published',label:'已刊发',emoji:'🎈',color:'#0000ff'},{key:'rejected',label:'被拒',emoji:'❌',color:'#ef4444'},{key:'withdrawn',label:'已撤稿',emoji:'↩️',color:'#94a3b8'}];
+const RL=[{key:'first',label:'一作',bg:'#fef3c7',fg:'#92400e',bd:'#fde68a'},{key:'secondly',label:'二作',bg:'#fef3c7',fg:'#FA8072',bd:'#fde68a'},{key:'thirdly',label:'三作',bg:'#fef3c7',fg:'#90EE90',bd:'#fde68a'},{key:'corresponding',label:'通讯',bg:'#ede9fe',fg:'#5b21b6',bd:'#ddd6fe'},{key:'co_first',label:'共一',bg:'#fce7f3',fg:'#9d174d',bd:'#fbcfe8'},{key:'co_corresponding',label:'共通',bg:'#dbeafe',fg:'#1e40af',bd:'#bfdbfe'},{key:'other',label:'合作者',bg:'#f1f5f9',fg:'#475569',bd:'#e2e8f0'}];
+const RV_ST=[{key:'pending',label:'待处理',emoji:'⏳',color:'#f59e0b'},{key:'completed',label:'已完成',emoji:'✅',color:'#22c55e'}];
+const RV_DEC=[{key:'',label:'待定',emoji:'🤔',color:'#9ca3af'},{key:'accept',label:'接收',emoji:'🎉',color:'#22c55e'},{key:'minor',label:'小修',emoji:'🔧',color:'#3b82f6'},{key:'major',label:'大修',emoji:'🔨',color:'#f59e0b'},{key:'reject',label:'拒稿',emoji:'❌',color:'#ef4444'}];
+
+const gs=k=>ST.find(s=>s.key===k)||ST[0];
+const gr=k=>RL.find(r=>r.key===k)||RL[4];
+const grv=k=>RV_ST.find(s=>s.key===k)||RV_ST[0];
+const gdec=k=>RV_DEC.find(d=>d.key===(k||''))||RV_DEC[0];
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const esc=s=>{const d=document.createElement('div');d.textContent=s;return d.innerHTML};
+const fD=d=>{if(!d)return'';const p=d.split('-');return p.length===3?p[0]+'/'+p[1]+'/'+p[2]:d};
+const vD=d=>{if(!d)return false;const p=d.split('-');if(p.length!==3)return false;const y=parseInt(p[0]);const m=parseInt(p[1]);const day=parseInt(p[2]);if(isNaN(y)||isNaN(m)||isNaN(day))return false;if(y<1000||y>9999)return false;if(m<1||m>12)return false;if(day<1||day>31)return false;return true};
+const clampDateInput=inp=>{if(!inp||!inp.value)return;const v=inp.value.replace(/[^0-9/-]/g,'');const p=v.split(/[-\/]/);if(p.length>=1&&p[0].length>4){p[0]=p[0].slice(0,4);inp.value=p.join('-')}};
+const dB=(a,b)=>{if(!a||!b)return 0;return Math.round((new Date(b)-new Date(a))/86400000)};
+const td=()=>new Date().toISOString().slice(0,10);
+const FK='paperFiles_v2';
+const RK='gz_repo';
+const DB_NAME='gz_repo_handle';
+const STORE_NAME='handles';
+
+function openDB(){return new Promise((rs,rj)=>{const req=indexedDB.open(DB_NAME,1);req.onupgradeneeded=()=>req.result.createObjectStore(STORE_NAME);req.onsuccess=()=>rs(req.result);req.onerror=()=>rj(req.error)})}
+async function saveHandleToDB(handle){try{const db=await openDB();return new Promise((rs,rj)=>{const tx=db.transaction(STORE_NAME,'readwrite');tx.objectStore(STORE_NAME).put(handle,'repoHandle');tx.oncomplete=()=>{db.close();rs()};tx.onerror=()=>{db.close();rj(tx.error)}})}catch(e){}}
+async function loadHandleFromDB(){try{const db=await openDB();return new Promise((rs,rj)=>{const tx=db.transaction(STORE_NAME,'readonly');const req=tx.objectStore(STORE_NAME).get('repoHandle');req.onsuccess=()=>{db.close();rs(req.result)};req.onerror=()=>{db.close();rj(req.error)}})}catch(e){return null}}
+async function removeHandleFromDB(){try{const db=await openDB();return new Promise((rs,rj)=>{const tx=db.transaction(STORE_NAME,'readwrite');tx.objectStore(STORE_NAME).delete('repoHandle');tx.oncomplete=()=>{db.close();rs()};tx.onerror=()=>{db.close();rj(tx.error)}})}catch(e){}}
+const FT={manuscript_pdf:{label:'📄 稿件PDF',folder:'稿件',badge:'bg:#dbeafe;color:#1e40af'},manuscript_docx:{label:'📝 稿件DOCX',folder:'稿件',badge:'bg:#dcfce7;color:#166534'},supplement_pdf:{label:'📋 附件PDF',folder:'附件',badge:'bg:#fef3c7;color:#92400e'},supplement_docx:{label:'🗒 附件DOCX',folder:'附件',badge:'bg:#fce7f3;color:#9d174d'},review_comment:{label:'📋 审稿意见',folder:'审稿意见',badge:'bg:#f5f3ff;color:#7c3aed'},review_reply:{label:'📝 意见回复',folder:'审稿意见回复',badge:'bg:#f0fdf4;color:#059669'},other:{label:'📁 其他',folder:'其他',badge:'bg:#f3f4f6;color:#374151'}};
+
+/* ========== 仓库管理模块 ========== */
+let repo={handle:null,path:'',bound:false,syncing:false};
+let fileStore={rootPath:null,rootHandle:null,papers:{}};
+let _syncTimer=null;
+
+async function initRepo(){try{const s=localStorage.getItem(RK);if(s){const d=JSON.parse(s);repo.path=d.path||'';repo.bound=!!d.path;repo.handle=null;repo.needsRebind=false;if(repo.bound){const h=await loadHandleFromDB();if(h){repo.handle=h;fileStore.rootHandle=h;fileStore.rootPath=h.name;try{const perm=await h.queryPermission({mode:'readwrite'});if(perm==='prompt'){const r=await h.requestPermission({mode:'readwrite'});if(r!=='granted'){repo.bound=false;repo.handle=null;repo.needsRebind=true}}else if(perm!=='granted'){repo.bound=false;repo.handle=null;repo.needsRebind=true}}catch(e){repo.bound=false;repo.handle=null;repo.needsRebind=true}}else{repo.bound=false;repo.needsRebind=true}}}}catch(e){repo={handle:null,path:'',bound:false,syncing:false,needsRebind:false}}}
+function saveRepoState(){try{localStorage.setItem(RK,JSON.stringify({path:repo.path,bound:repo.bound}))}catch(e){}}
+async function bindRepo(){if(!('showDirectoryPicker' in window)){toast('浏览器不支持文件夹选择（需Chrome/Edge）','error');return}try{const h=await window.showDirectoryPicker({mode:'readwrite',id:'gaozijun-repo'});repo.handle=h;repo.path=h.name;repo.bound=true;repo.needsRebind=false;saveRepoState();fileStore.rootHandle=h;fileStore.rootPath=h.name;saveFileStore();await saveHandleToDB(h);toast('仓库已绑定: '+h.name);await syncToRepo();render()}catch(e){if(e.name!=='AbortError')toast('绑定失败: '+e.message,'error')}}
+function unbindRepo(){if(!confirm('解绑仓库？\n\n本地数据不会被删除，但将不再自动同步到文件夹。'))return;repo={handle:null,path:'',bound:false,syncing:false};saveRepoState();fileStore.rootHandle=null;saveFileStore();removeHandleFromDB();toast('仓库已解绑');render()}
+async function verifyHandle(){if(!repo.handle)return false;try{await repo.handle.getDirectoryHandle('投稿',{create:false});return true}catch(e){return false}}
+async function repoSubdir(subPath,create=true){if(repo.bound&&!await ensureRepoAccess())return null;try{let h=repo.handle;for(const part of subPath.split('/').filter(Boolean)){h=await h.getDirectoryHandle(part,{create})}return h}catch(e){return null}}
+async function ensureRepoAccess(){if(!repo.bound)return false;if(!repo.handle){const h=await loadHandleFromDB();if(!h)return false;repo.handle=h;fileStore.rootHandle=h;fileStore.rootPath=h.name}try{const perm=await repo.handle.queryPermission({mode:'readwrite'});if(perm==='granted')return true;if(perm==='prompt'){const p=await repo.handle.requestPermission({mode:'readwrite'});return p==='granted'}return false}catch(e){return false}}
+async function rebindIfNeeded(){if(!await ensureRepoAccess()){if(!('showDirectoryPicker'in window))return false;toast('仓库权限已失效，请重新选择文件夹（上次: '+repo.path+'）');try{const h=await window.showDirectoryPicker({mode:'readwrite',id:'gaozijun-repo'});repo.handle=h;repo.path=h.name;saveRepoState();fileStore.rootHandle=h;fileStore.rootPath=h.name;saveFileStore();await saveHandleToDB(h);return true}catch(e){return false}}return true}
+function paperFN(p){return p.id+'_'+(p.title||'未命名').replace(/[\\/:*?"<>|]/g,'_').slice(0,50)+'.json'}
+function reviewFN(r){return r.id+'_'+(r.journal||'未定').replace(/[\\/:*?"<>|]/g,'_').slice(0,40)+'_R'+(r.round||1)+'.json'}
+function evalFN(ev){return ev.id+'_'+(ev.journalName||'未定').replace(/[\\/:*?"<>|]/g,'_').slice(0,40)+'.json'}
+function ensureEvalForPaper(p){if(!p||!p.id||!p.journal)return;if(evaluations.find(e=>e.paperId===p.id))return;evaluations.push({id:uid(),paperId:p.id,journalName:p.journal,impactFactor:'',tiersCn:{cssci:false,cssciEx:false,pku:false,econTop:false},tiersEn:{absStar:0,ssciQ:'',casQ:''},submissionDate:p.submittedDate||'',myNotes:'',communityNotes:[]})}
+
+async function syncToRepo(){
+  if(!repo.bound)return;if(repo.syncing)return;repo.syncing=true;
+  try{
+    if(!await ensureRepoAccess()&&!await rebindIfNeeded()){repo.syncing=false;return}
+    const sub=await repoSubdir('投稿',true);
+    if(sub){for(const p of papers){try{const fh=await sub.getFileHandle(paperFN(p),{create:true});const w=await fh.createWritable();await w.write(JSON.stringify(p,null,2));await w.close()}catch(e){}}for await(const entry of sub.values()){if(entry.kind==='file'){const n=entry.name;if(!papers.find(p=>paperFN(p)===n)){try{await entry.remove()}catch(e){}}}}}
+    const subR=await repoSubdir('审稿',true);
+    if(subR){for(const r of reviews){try{const fh=await subR.getFileHandle(reviewFN(r),{create:true});const w=await fh.createWritable();await w.write(JSON.stringify(r,null,2));await w.close()}catch(e){}}for await(const entry of subR.values()){if(entry.kind==='file'){const n=entry.name;if(!reviews.find(r=>reviewFN(r)===n)){try{await entry.remove()}catch(e){}}}}}
+    const subE=await repoSubdir('评价',true);
+    if(subE){for(const ev of evaluations){try{const fh=await subE.getFileHandle(evalFN(ev),{create:true});const w=await fh.createWritable();await w.write(JSON.stringify(ev,null,2));await w.close()}catch(e){}}for await(const entry of subE.values()){if(entry.kind==='file'){const n=entry.name;if(!evaluations.find(e=>evalFN(e)===n)){try{await entry.remove()}catch(e){}}}}}
+    await repoSubdir('文件',true);
+    // 清理已删除论文的"文件"文件夹
+    try{const fd=await repoSubdir('文件',false);if(fd){const an=new Set();papers.forEach(p=>{const dn=safeName((p.title||'未命名').slice(0,40))+(p.journal?'_'+safeName(p.journal.slice(0,15)):'');an.add(dn)});for await(const e of fd.values()){if(e.kind==='directory'&&!an.has(e.name)){try{await fd.removeEntry(e.name,{recursive:true})}catch(e){}}}}}catch(e){}
+    await saveConfigToRepo();setLastBackup();
+  }catch(e){console.warn('同步到仓库失败:',e)}
+  repo.syncing=false;
+}
+
+async function loadFromRepo(){
+  if(!repo.bound)return false;if(!await ensureRepoAccess()&&!await rebindIfNeeded())return false;
+  try{
+    const sub=await repoSubdir('投稿',false);
+    if(sub){const loaded=[];for await(const entry of sub.values()){if(entry.kind==='file'&&entry.name.endsWith('.json')){try{const f=await entry.getFile();const p=JSON.parse(await f.text());if(p&&p.id&&p.title)loaded.push(p)}catch(e){}}}if(loaded.length){const ids=new Set(papers.map(p=>p.id));papers=[...papers.filter(p=>!ids.has(p.id)),...loaded.filter(l=>!ids.has(l.id))]}}
+    const subR=await repoSubdir('审稿',false);
+    if(subR){const loaded=[];for await(const entry of subR.values()){if(entry.kind==='file'&&entry.name.endsWith('.json')){try{const f=await entry.getFile();const r=JSON.parse(await f.text());if(r&&r.id&&r.journal)loaded.push(r)}catch(e){}}}if(loaded.length){const ids=new Set(reviews.map(r=>r.id));reviews=[...reviews.filter(r=>!ids.has(r.id)),...loaded.filter(l=>!ids.has(l.id))]}}
+    const subE=await repoSubdir('评价',false);
+    if(subE){const loaded=[];for await(const entry of subE.values()){if(entry.kind==='file'&&entry.name.endsWith('.json')){try{const f=await entry.getFile();const ev=JSON.parse(await f.text());if(ev&&ev.id)loaded.push(ev)}catch(e){}}}if(loaded.length){const ids=new Set(evaluations.map(e=>e.id));evaluations=[...evaluations.filter(e=>!ids.has(e.id)),...loaded.filter(l=>!ids.has(l.id))]}}
+    await loadConfigFromRepo();return true;
+  }catch(e){console.warn('从仓库加载失败:',e);return false}
+}
+
+async function saveConfigToRepo(){if(!repo.bound)return;if(!await ensureRepoAccess()&&!await rebindIfNeeded())return;try{const fh=await repo.handle.getFileHandle('_稿子菌配置.json',{create:true});const w=await fh.createWritable();await w.write(JSON.stringify({labels,settings,exportDate:td(),version:'稿子菌v6.0'},null,2));await w.close()}catch(e){}}
+async function loadConfigFromRepo(){if(!repo.bound)return;if(!await ensureRepoAccess()&&!await rebindIfNeeded())return;try{const fh=await repo.handle.getFileHandle('_稿子菌配置.json');const d=JSON.parse(await(await fh.getFile()).text());if(d.labels)labels=d.labels;if(d.settings)settings={...settings,...d.settings}}catch(e){}}
+
+function debouncedSync(){if(_syncTimer)clearTimeout(_syncTimer);_syncTimer=setTimeout(async()=>{await syncToRepo();render()},600)}
+
+/* ========== 文件管理（仓库/文件/） ========== */
+function initFileStore(){try{const s=localStorage.getItem(FK);if(s)fileStore=JSON.parse(s);else saveFileStore();}catch(e){fileStore={rootPath:null,rootHandle:null,papers:{}};saveFileStore()}}
+function saveFileStore(){try{localStorage.setItem(FK,JSON.stringify({rootPath:fileStore.rootPath,papers:fileStore.papers}));}catch(e){}}
+function getPaperFileCount(pid){const pf=fileStore.papers[pid];return pf?Object.values(pf).flat().length:0;}
+async function pickRootFolder(){return await bindRepo()}
+async function getPaperDir(pid,pname){const rh=repo.handle||fileStore.rootHandle;if(!rh)return null;try{let h=rh;if(repo.bound)h=await rh.getDirectoryHandle('文件',{create:true});return await h.getDirectoryHandle(pname,{create:true})}catch(e){return null}}
+async function getOrCreateSub(pid,pname,sub){const pd=await getPaperDir(pid,pname);if(!pd)return null;try{return await pd.getDirectoryHandle(sub,{create:true})}catch(e){return null}}
+function getNodeDir(p,evid){const tl=(p.timeline||[]);const ev=tl.find(e=>e.id===evid);if(!ev)return null;const idx=tl.indexOf(ev);return String(idx+1).padStart(2,'0')+'_'+safeName(ev.label)}
+async function getOrCreateNested(pid,pname,parts){let h=await getPaperDir(pid,pname);if(!h)return null;for(const part of parts){try{h=await h.getDirectoryHandle(part,{create:true})}catch(e){return null}}return h}
+function safeName(n){return n.replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{200D}\u{20E3}\u{2300}-\u{23FF}\u{2B50}\u{2B55}\u{3030}\u{303D}\u{3297}\u{3299}]/gu,'').replace(/[\\/:*?"<>|]/g,'_').replace(/[^\w一-鿿㐀-䶿\u{f900}-\u{faff}\-\.]/gu,'_').replace(/_+/g,'_').replace(/^_|_$/g,'').slice(0,80)}
+function ts(){return new Date().toISOString().replace(/[:.]/g,'-').slice(0,19).replace('T','_');}
+async function addPaperFile(pid,pname,ftype,fileObj,evId){
+  if(repo.bound&&!await ensureRepoAccess()&&!await rebindIfNeeded()){toast('仓库权限已失效，请重新绑定','error');return null}
+  let nodeDir=null;if(evId){const p=papers.find(x=>x.id===pid);if(p)nodeDir=getNodeDir(p,evId)}
+  const subParts=nodeDir?[nodeDir,FT[ftype].folder]:[FT[ftype].folder];const sd=await getOrCreateNested(pid,pname,subParts);
+  if(!sd){toast(repo.bound?'仓库权限已失效，请重新绑定':'请先绑定仓库文件夹','error');return null}
+  const ext=fileObj.name.split('.').pop()||'';
+  // 扫描已有文件，确定最大序号（标准化命名：01_论文标题.pdf / 01_附录.pdf）
+  let maxIdx=0;
+  try{for await(const f of sd.values()){if(f.kind!=='file')continue;let m;if(ftype==='manuscript_pdf'||ftype==='manuscript_docx'){m=f.name.match(/^(\d+)_/)}else if(ftype==='supplement_pdf'||ftype==='supplement_docx'){m=f.name.match(/^(\d+)_附录/)}if(m){const n=parseInt(m[1],10);if(n>maxIdx)maxIdx=n}}}catch(e){}
+  const pRef=papers.find(x=>x.id===pid);
+  const prefix=ftype==='manuscript_pdf'||ftype==='manuscript_docx'?(pRef?.title||'论文').slice(0,20):ftype==='supplement_pdf'||ftype==='supplement_docx'?'附录':safeName(fileObj.name.replace(/\.[^.]+$/,''));
+  const safeFName=String(maxIdx+1).padStart(2,'0')+'_'+prefix+'.'+ext;
+  try{const fh=await sd.getFileHandle(safeFName,{create:true});const w=await fh.createWritable();await w.write(fileObj);await w.close();
+    const folderPath=repo.bound?'文件/'+pname+(nodeDir?'/'+nodeDir+'/':'/')+FT[ftype].folder:pname+(nodeDir?'/'+nodeDir+'/':'/')+FT[ftype].folder;
+    const entry={id:uid(),name:fileObj.name,fileName:safeFName,type:ftype,size:fileObj.size,folder:FT[ftype].folder,paperFolder:pname,uploadDate:td()};
+    if(nodeDir)entry.nodeDir=nodeDir;if(!fileStore.papers[pid])fileStore.papers[pid]=[];fileStore.papers[pid].push(entry);
+    saveFileStore();toast('文件已保存到: '+folderPath);return entry
+  }catch(e){toast('保存失败: '+e.message,'error');return null}
+}
+async function openPaperFile(entry){if(repo.bound&&!await ensureRepoAccess()&&!await rebindIfNeeded()){toast('仓库权限已失效','error');return;}const rh=repo.handle||fileStore.rootHandle;if(!rh){toast(repo.bound?'仓库权限已失效':'根文件夹未设置','error');return;}try{let pd;if(repo.bound){pd=await rh.getDirectoryHandle('文件',{create:false});pd=await pd.getDirectoryHandle(entry.paperFolder)}else{pd=await rh.getDirectoryHandle(entry.paperFolder)}let sd=pd;if(entry.nodeDir){try{sd=await sd.getDirectoryHandle(entry.nodeDir)}catch(e){}}sd=await sd.getDirectoryHandle(entry.folder);const fh=await sd.getFileHandle(entry.fileName);const file=await fh.getFile();const ext=file.name.split('.').pop().toLowerCase();if(ext==='pdf'){const url=URL.createObjectURL(file);window.open(url,'_blank');setTimeout(()=>URL.revokeObjectURL(url),60000)}else{try{const buf=await file.arrayBuffer();let binary='';const bytes=new Uint8Array(buf),chunk=8192;for(let i=0;i<bytes.length;i+=chunk){binary+=String.fromCharCode(...bytes.subarray(i,Math.min(i+chunk,bytes.length)))}const b64=btoa(binary);const r=await fetch('/upload',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({filename:file.name,content:b64})});const d=await r.json();if(d.url){const viewerUrl='https://view.officeapps.live.com/op/view.aspx?src='+encodeURIComponent(window.location.origin+d.url);window.open(viewerUrl,'_blank')}else{throw new Error('upload failed')}}catch(fetchErr){const url=URL.createObjectURL(file);window.open(url,'_blank');setTimeout(()=>URL.revokeObjectURL(url),60000)}}}catch(e){toast('文件未找到: '+e.message,'error')}}
+async function deletePaperFile(pid,eid){const pf=fileStore.papers[pid];if(!pf)return;const idx=pf.findIndex(f=>f.id===eid);if(idx<0)return;const entry=pf[idx];if(repo.bound&&!await ensureRepoAccess()&&!await rebindIfNeeded()){toast('仓库权限已失效','error');return;}const rh=repo.handle||fileStore.rootHandle;if(rh){try{let pd;if(repo.bound){pd=await rh.getDirectoryHandle('文件',{create:false});pd=await pd.getDirectoryHandle(entry.paperFolder)}else{pd=await rh.getDirectoryHandle(entry.paperFolder)}let sd=pd;if(entry.nodeDir){try{sd=await sd.getDirectoryHandle(entry.nodeDir)}catch(e){}}sd=await sd.getDirectoryHandle(entry.folder);await sd.getFileHandle(entry.fileName).then(f=>f.remove())}catch(e){}}pf.splice(idx,1);if(entry.type==='review_comment'||entry.type==='review_reply'){const p=papers.find(x=>x.id===pid);if(p&&p.timeline){for(const ev of p.timeline){if(entry.type==='review_comment'&&ev.reviewComments){const ci=ev.reviewComments.findIndex(c=>c.id===eid);if(ci>=0){ev.reviewComments.splice(ci,1);}}if(entry.type==='review_reply'&&ev.reviewReplies){const ri=ev.reviewReplies.findIndex(r=>r.id===eid);if(ri>=0){ev.reviewReplies.splice(ri,1);}}}}}saveFileStore();saveAll();toast('文件已删除')}
+function navigateToFile(pid,fid){
+  switchMainTab('files');
+  setTimeout(()=>{
+    const el=document.querySelector(`[data-file-id="${fid}"]`);
+    if(el){
+      el.scrollIntoView({behavior:'smooth',block:'center'});
+      el.style.transition='background .5s';
+      el.style.background='#fef9c3';
+      setTimeout(()=>{el.style.background=''},1500);
+    }
+  },100);
+}
+async function exportPaperJson(pid,pname){const p=papers.find(x=>x.id===pid);if(!p)return;const ev=evaluations.find(e=>e.paperId===pid);const obj={exportDate:td(),paper:p,evaluation:ev,files:fileStore.papers[pid]||[]};const blob=new Blob([JSON.stringify(obj,null,2)],{type:'application/json'});if(repo.bound){if(!await ensureRepoAccess()&&!await rebindIfNeeded()){toast('仓库权限已失效','error');}else{try{const sd=await repoSubdir('投稿',true);const fh=await sd.getFileHandle(paperFN(p),{create:true});const w=await fh.createWritable();await w.write(blob);await w.close();toast('数据已同步到仓库/投稿/');return}catch(e){}}}const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=pname+'_数据.json';a.click();toast('数据已导出下载')}
+async function syncPaperToRepo(pid,pname){
+  if(repo.bound&&!await ensureRepoAccess()&&!await rebindIfNeeded()){toast('仓库权限已失效','error');return;}
+  const rh=repo.handle||fileStore.rootHandle;
+  if(!rh){toast('仓库未绑定','error');return;}
+  const p=papers.find(x=>x.id===pid);if(!p){toast('论文不存在','error');return;}
+  const pfs=fileStore.papers[pid]||[];
+  let synced=0,missing=0,scanned=0;
+  try{
+    const fileDir=await rh.getDirectoryHandle('文件',{create:false});
+    let dirName=null;
+    try{await fileDir.getDirectoryHandle(pname);dirName=pname}catch(e){}
+    if(!dirName){
+      for await(const entry of fileDir.values()){
+        if(entry.kind!=='directory')continue;
+        if(entry.name===p.title||entry.name===pname||entry.name.startsWith(p.title.slice(0,30))){dirName=entry.name;break;}
+      }
+    }
+    if(!dirName){toast('未找到该论文的仓库文件夹，请先上传文件','error');return;}
+    const paperDir=await fileDir.getDirectoryHandle(dirName);
+    for(const f of pfs){
+      scanned++;
+      try{
+        let sd=paperDir;
+        if(f.nodeDir)sd=await sd.getDirectoryHandle(f.nodeDir);
+        sd=await sd.getDirectoryHandle(f.folder);
+        await sd.getFileHandle(f.fileName);
+        synced++;
+      }catch(e){missing++}
+    }
+    const ev=evaluations.find(e=>e.paperId===pid);
+    const obj={syncDate:td(),paper:p,evaluation:ev,files:pfs};
+    const blob=new Blob([JSON.stringify(obj,null,2)],{type:'application/json'});
+    try{
+      const sd=await repoSubdir('投稿',true);
+      const fh=await sd.getFileHandle(paperFN(p),{create:true});
+      const w=await fh.createWritable();await w.write(blob);await w.close();
+    }catch(e){}
+    let msg=`✅ 已同步到仓库：${synced}/${scanned} 个文件`;
+    if(missing>0)msg+=`，${missing} 个文件缺失`;
+    msg+=`，数据已保存至 投稿/`;
+    toast(msg);
+  }catch(e){toast('同步失败: '+e.message,'error');}
+}
+async function syncRepoFiles(pid,pname){
+  if(repo.bound&&!await ensureRepoAccess()&&!await rebindIfNeeded()){toast('仓库权限已失效','error');return;}
+  const rh=repo.handle||fileStore.rootHandle;
+  if(!rh){toast('仓库未绑定','error');return;}
+  const p=papers.find(x=>x.id===pid);if(!p){toast('论文不存在','error');return;}
+  const existing=(fileStore.papers[pid]||[]);
+  let dirName=null;
+  const fileDir=await rh.getDirectoryHandle('文件',{create:false});
+  if(existing.length>0){
+    const candidate=existing[0].paperFolder;
+    try{await fileDir.getDirectoryHandle(candidate);dirName=candidate}catch(e){}
+  }
+  if(!dirName){
+    try{
+      for await(const entry of fileDir.values()){
+        if(entry.kind!=='directory')continue;
+        if(entry.name===p.title||entry.name===pname||entry.name.startsWith(p.title.slice(0,30))){dirName=entry.name;break;}
+      }
+    }catch(e){}
+  }
+  if(!dirName){
+    // 论文仓库文件夹尚未创建 → 自动创建
+    try{await fileDir.getDirectoryHandle(pname,{create:true});dirName=pname;toast('✅ 已自动创建论文文件夹「'+pname+'」，现在可以上传文件了');return}catch(e){toast('⚠️ 论文文件夹创建失败，请先上传文件','error');return}
+  }
+  try{
+    const paperDir=await fileDir.getDirectoryHandle(dirName);
+    // 构建已有文件的键（同时支持平铺和节点两种格式，方便去重）
+    const existingFileNames=new Set;
+    for(const f of existing){
+      existingFileNames.add(f.folder+'/'+f.fileName);
+      if(f.nodeDir)existingFileNames.add(f.nodeDir+'/'+f.folder+'/'+f.fileName);
+    }
+    let added=0,scanned=0,removed=0;
+    const repoFileKeys=new Set;
+    const subFolderNames=['稿件','附件','其他','审稿意见','审稿意见回复'];
+    const nodePattern=/^\d\d_/;
+    // 扫描论文目录：先处理节点子目录，再处理平铺子目录（向后兼容）
+    for await(const dirEntry of paperDir.values()){
+      if(dirEntry.kind!=='directory')continue;
+      let nodeDir=null,subDirs=[];
+      if(nodePattern.test(dirEntry.name)){
+        nodeDir=dirEntry.name;
+        for(const sub of subFolderNames){
+          try{const sh=await dirEntry.getDirectoryHandle(sub);subDirs.push({handle:sh,name:sub})}catch(e){}
+        }
+      }else if(subFolderNames.includes(dirEntry.name)){
+        subDirs.push({handle:dirEntry,name:dirEntry.name});
+      }
+      for(const sub of subDirs){
+        for await(const entry of sub.handle.values()){
+          if(entry.kind!=='file')continue;
+          scanned++;
+          const key=(nodeDir?nodeDir+'/':'')+sub.name+'/'+entry.name;
+          repoFileKeys.add(key);
+          if(existingFileNames.has(key))continue;
+          // 按文件名去重：同一 sub 下同名文件只保留一份
+          const dup=existing.some(f=>f.folder===sub.name&&f.fileName===entry.name);
+          if(dup)continue;
+          const file=await entry.getFile();
+          const ext=file.name.split('.').pop().toLowerCase();
+          let ftype='other';
+          if(sub.name==='稿件'){ftype=ext==='pdf'?'manuscript_pdf':ext==='docx'||ext==='doc'?'manuscript_docx':'other';}
+          else if(sub.name==='附件'){ftype=ext==='pdf'?'supplement_pdf':ext==='docx'||ext==='doc'?'supplement_docx':'other';}
+          else if(sub.name==='审稿意见'){ftype='review_comment';}
+          else if(sub.name==='审稿意见回复'){ftype='review_reply';}
+          const newEntry={id:uid(),name:file.name,fileName:entry.name,type:ftype,size:file.size,folder:sub.name,paperFolder:dirName,uploadDate:td()};
+          if(nodeDir)newEntry.nodeDir=nodeDir;
+          if(!fileStore.papers[pid])fileStore.papers[pid]=[];
+          fileStore.papers[pid].push(newEntry);
+          // 按 nodeDir 匹配到对应时间线事件
+          if(nodeDir&&p.timeline&&p.timeline.length>0){
+            const evLabel=nodeDir.replace(/^\d\d_/,'');
+            const matchedEv=p.timeline.find(e=>safeName(e.label)===evLabel);
+            if(matchedEv){
+              if(ftype==='review_comment'){
+                if(!matchedEv.reviewComments)matchedEv.reviewComments=[];
+                if(!matchedEv.reviewComments.find(c=>c.id===newEntry.id))matchedEv.reviewComments.push(newEntry);
+              }else if(ftype==='review_reply'){
+                if(!matchedEv.reviewReplies)matchedEv.reviewReplies=[];
+                if(!matchedEv.reviewReplies.find(r=>r.id===newEntry.id))matchedEv.reviewReplies.push(newEntry);
+              }else if(ftype==='manuscript_pdf'||ftype==='manuscript_docx'){
+                if(!matchedEv.manuscripts)matchedEv.manuscripts=[];
+                if(!matchedEv.manuscripts.includes(newEntry.id))matchedEv.manuscripts.push(newEntry.id);
+              }else if(ftype==='supplement_pdf'||ftype==='supplement_docx'){
+                if(!matchedEv.supplements)matchedEv.supplements=[];
+                if(!matchedEv.supplements.includes(newEntry.id))matchedEv.supplements.push(newEntry.id);
+              }
+            }
+          }
+          added++;
+        }
+      }
+    }
+    const before=fileStore.papers[pid]?.length||0;
+    if(fileStore.papers[pid]){
+      fileStore.papers[pid]=fileStore.papers[pid].filter(f=>{
+        const flatKey=f.folder+'/'+f.fileName;
+        if(repoFileKeys.has(flatKey))return true;
+        if(f.nodeDir){const nodeKey=f.nodeDir+'/'+flatKey;if(repoFileKeys.has(nodeKey))return true;}
+        return false;
+      });
+      removed=before-fileStore.papers[pid].length;
+    }
+    if(removed>0){
+      const p2=papers.find(x=>x.id===pid);
+      if(p2&&p2.timeline){
+        const currentIds=new Set((fileStore.papers[pid]||[]).map(f=>f.id));
+        for(const ev of p2.timeline){
+          if(ev.reviewComments)ev.reviewComments=ev.reviewComments.filter(c=>currentIds.has(c.id));
+          if(ev.reviewReplies)ev.reviewReplies=ev.reviewReplies.filter(r=>currentIds.has(r.id));
+        }
+        saveAll();
+      }
+    }
+    if(added>0||removed>0){saveFileStore();toast(`📂 已同步 ${added} 个新文件，移除 ${removed} 个已删除文件（共扫描 ${scanned} 个）`);}
+    else{toast(`✅ 文件已是最新（共扫描 ${scanned} 个，无新增）`);}
+    switchMainTab('files');
+  }catch(e){toast('同步失败: '+e.message,'error');}
+}
+async function syncProgressFiles(pid,pname){
+  if(repo.bound&&!await ensureRepoAccess()&&!await rebindIfNeeded()){toast('仓库权限已失效','error');return;}
+  const rh=repo.handle||fileStore.rootHandle;
+  if(!rh){toast('仓库未绑定','error');return;}
+  const p=papers.find(x=>x.id===pid);if(!p){toast('论文不存在','error');return;}
+  const existing=(fileStore.papers[pid]||[]);
+  let dirName=null;
+  const fileDir=await rh.getDirectoryHandle('文件',{create:false});
+  if(existing.length>0){
+    const candidate=existing[0].paperFolder;
+    try{await fileDir.getDirectoryHandle(candidate);dirName=candidate}catch(e){}
+  }
+  if(!dirName){
+    try{
+      for await(const entry of fileDir.values()){
+        if(entry.kind!=='directory')continue;
+        if(entry.name===p.title||entry.name===pname||entry.name.startsWith(p.title.slice(0,30))){dirName=entry.name;break;}
+      }
+    }catch(e){}
+  }
+  if(!dirName){
+    // 论文仓库文件夹尚未创建 → 自动创建
+    try{await fileDir.getDirectoryHandle(pname,{create:true});dirName=pname;toast('✅ 已自动创建论文文件夹「'+pname+'」，现在可以上传文件了');return}catch(e){toast('⚠️ 论文文件夹创建失败，请先上传文件','error');return}
+  }
+  try{
+    const paperDir=await fileDir.getDirectoryHandle(dirName);
+    // 构建已有文件的键（同时支持平铺和节点两种格式，方便去重）
+    const existingFileNames=new Set;
+    for(const f of existing){
+      existingFileNames.add(f.folder+'/'+f.fileName);
+      if(f.nodeDir)existingFileNames.add(f.nodeDir+'/'+f.folder+'/'+f.fileName);
+    }
+    let added=0,scanned=0,removed=0;
+    const repoFileKeys=new Set;
+    const subFolderNames=['稿件','附件','其他','审稿意见','审稿意见回复'];
+    const nodePattern=/^\d\d_/;
+    // 扫描论文目录：先处理节点子目录，再处理平铺子目录（向后兼容）
+    for await(const dirEntry of paperDir.values()){
+      if(dirEntry.kind!=='directory')continue;
+      let nodeDir=null,subDirs=[];
+      if(nodePattern.test(dirEntry.name)){
+        nodeDir=dirEntry.name;
+        for(const sub of subFolderNames){
+          try{const sh=await dirEntry.getDirectoryHandle(sub);subDirs.push({handle:sh,name:sub})}catch(e){}
+        }
+      }else if(subFolderNames.includes(dirEntry.name)){
+        subDirs.push({handle:dirEntry,name:dirEntry.name});
+      }
+      for(const sub of subDirs){
+        for await(const entry of sub.handle.values()){
+          if(entry.kind!=='file')continue;
+          scanned++;
+          const key=(nodeDir?nodeDir+'/':'')+sub.name+'/'+entry.name;
+          repoFileKeys.add(key);
+          if(existingFileNames.has(key))continue;
+          // 按文件名去重：同一 sub 下同名文件只保留一份
+          const dup=existing.some(f=>f.folder===sub.name&&f.fileName===entry.name);
+          if(dup)continue;
+          const file=await entry.getFile();
+          const ext=file.name.split('.').pop().toLowerCase();
+          let ftype='other';
+          if(sub.name==='稿件'){ftype=ext==='pdf'?'manuscript_pdf':ext==='docx'||ext==='doc'?'manuscript_docx':'other';}
+          else if(sub.name==='附件'){ftype=ext==='pdf'?'supplement_pdf':ext==='docx'||ext==='doc'?'supplement_docx':'other';}
+          else if(sub.name==='审稿意见'){ftype='review_comment';}
+          else if(sub.name==='审稿意见回复'){ftype='review_reply';}
+          const newEntry={id:uid(),name:file.name,fileName:entry.name,type:ftype,size:file.size,folder:sub.name,paperFolder:dirName,uploadDate:td()};
+          if(nodeDir)newEntry.nodeDir=nodeDir;
+          if(!fileStore.papers[pid])fileStore.papers[pid]=[];
+          fileStore.papers[pid].push(newEntry);
+          // 按 nodeDir 匹配到对应时间线事件
+          if(nodeDir&&p.timeline&&p.timeline.length>0){
+            const evLabel=nodeDir.replace(/^\d\d_/,'');
+            const matchedEv=p.timeline.find(e=>safeName(e.label)===evLabel);
+            if(matchedEv){
+              if(ftype==='review_comment'){
+                if(!matchedEv.reviewComments)matchedEv.reviewComments=[];
+                if(!matchedEv.reviewComments.find(c=>c.id===newEntry.id))matchedEv.reviewComments.push(newEntry);
+              }else if(ftype==='review_reply'){
+                if(!matchedEv.reviewReplies)matchedEv.reviewReplies=[];
+                if(!matchedEv.reviewReplies.find(r=>r.id===newEntry.id))matchedEv.reviewReplies.push(newEntry);
+              }else if(ftype==='manuscript_pdf'||ftype==='manuscript_docx'){
+                if(!matchedEv.manuscripts)matchedEv.manuscripts=[];
+                if(!matchedEv.manuscripts.includes(newEntry.id))matchedEv.manuscripts.push(newEntry.id);
+              }else if(ftype==='supplement_pdf'||ftype==='supplement_docx'){
+                if(!matchedEv.supplements)matchedEv.supplements=[];
+                if(!matchedEv.supplements.includes(newEntry.id))matchedEv.supplements.push(newEntry.id);
+              }
+            }
+          }
+          added++;
+        }
+      }
+    }
+    const before=fileStore.papers[pid]?.length||0;
+    if(fileStore.papers[pid]){
+      fileStore.papers[pid]=fileStore.papers[pid].filter(f=>{
+        const flatKey=f.folder+'/'+f.fileName;
+        if(repoFileKeys.has(flatKey))return true;
+        if(f.nodeDir){const nodeKey=f.nodeDir+'/'+flatKey;if(repoFileKeys.has(nodeKey))return true;}
+        return false;
+      });
+      removed=before-fileStore.papers[pid].length;
+    }
+    if(removed>0){
+      const p2=papers.find(x=>x.id===pid);
+      if(p2&&p2.timeline){
+        const currentIds=new Set((fileStore.papers[pid]||[]).map(f=>f.id));
+        for(const ev of p2.timeline){
+          if(ev.reviewComments)ev.reviewComments=ev.reviewComments.filter(c=>currentIds.has(c.id));
+          if(ev.reviewReplies)ev.reviewReplies=ev.reviewReplies.filter(r=>currentIds.has(r.id));
+        }
+        saveAll();
+      }
+    }
+    if(added>0||removed>0){saveFileStore();toast(`📂 已同步 ${added} 个新文件，移除 ${removed} 个已删除文件（共扫描 ${scanned} 个）`);}
+    else{toast(`✅ 文件已是最新（共扫描 ${scanned} 个，无新增）`);}
+    render();
+  }catch(e){toast('同步失败: '+e.message,'error');}
+}
+async function fullSyncFromRepo(){
+  if(repo.bound&&!await ensureRepoAccess()&&!await rebindIfNeeded()){toast('仓库权限已失效','error');return;}
+  const rh=repo.handle||fileStore.rootHandle;
+  if(!rh){toast('仓库未绑定','error');return;}
+  try{
+    const fileDir=await rh.getDirectoryHandle('文件',{create:false});
+    let totalAdded=0,totalScanned=0;
+    for await(const paperEntry of fileDir.values()){
+      if(paperEntry.kind!=='directory')continue;
+      const pname=paperEntry.name;
+      const p=papers.find(x=>x.title===pname||safeName((x.title||'未命名').slice(0,40))+(x.journal?'_'+safeName(x.journal.slice(0,15)):'')===pname||pname.startsWith((x.title||'').slice(0,30)));
+      if(!p)continue;
+      const pid=p.id;
+      if(!fileStore.papers[pid])fileStore.papers[pid]=[];
+      const existingNames=new Set;
+      for(const f of (fileStore.papers[pid]||[])){
+        existingNames.add(f.folder+'/'+f.fileName);
+        if(f.nodeDir)existingNames.add(f.nodeDir+'/'+f.folder+'/'+f.fileName);
+      }
+      const subFolderNames=['稿件','附件','其他','审稿意见','审稿意见回复'];
+      const nodePattern=/^\d\d_/;
+      for await(const dirEntry of paperEntry.values()){
+        if(dirEntry.kind!=='directory')continue;
+        let nodeDir=null,subDirs=[];
+        if(nodePattern.test(dirEntry.name)){
+          nodeDir=dirEntry.name;
+          for(const sub of subFolderNames){
+            try{const sh=await dirEntry.getDirectoryHandle(sub);subDirs.push({handle:sh,name:sub})}catch(e){}
+          }
+        }else if(subFolderNames.includes(dirEntry.name)){
+          subDirs.push({handle:dirEntry,name:dirEntry.name});
+        }
+        for(const sub of subDirs){
+          for await(const entry of sub.handle.values()){
+            if(entry.kind!=='file')continue;
+            totalScanned++;
+            const key=(nodeDir?nodeDir+'/':'')+sub.name+'/'+entry.name;
+            if(existingNames.has(key))continue;
+            const dup=(fileStore.papers[pid]||[]).some(f=>f.folder===sub.name&&f.fileName===entry.name);
+            if(dup)continue;
+            const file=await entry.getFile();
+            const ext=file.name.split('.').pop().toLowerCase();
+            let ftype='other';
+            if(sub.name==='稿件'){ftype=ext==='pdf'?'manuscript_pdf':ext==='docx'||ext==='doc'?'manuscript_docx':'other';}
+            else if(sub.name==='附件'){ftype=ext==='pdf'?'supplement_pdf':ext==='docx'||ext==='doc'?'supplement_docx':'other';}
+            else if(sub.name==='审稿意见'){ftype='review_comment';}
+            else if(sub.name==='审稿意见回复'){ftype='review_reply';}
+            const newEntry={id:uid(),name:file.name,fileName:entry.name,type:ftype,size:file.size,folder:sub.name,paperFolder:pname,uploadDate:td()};
+            if(nodeDir)newEntry.nodeDir=nodeDir;
+            fileStore.papers[pid].push(newEntry);
+            totalAdded++;
+          }
+        }
+      }
+    }
+    if(totalAdded>0){saveFileStore();toast(`✅ 已从仓库同步 ${totalAdded} 个文件（共扫描 ${totalScanned} 个）`);}
+    else{toast(`✅ 数据已是最新（共扫描 ${totalScanned} 个）`);}
+    render();
+  }catch(e){toast('全量同步失败: '+e.message,'error');}
+}
+async function renameRepoDirs(){
+  if(repo.bound&&!await ensureRepoAccess()&&!await rebindIfNeeded()){toast('仓库权限已失效','error');return;}
+  const rh=repo.handle||fileStore.rootHandle;
+  try{
+    const fileDir=await rh.getDirectoryHandle('文件',{create:false});
+    const dirEntries=[];
+    for await(const entry of fileDir.values()){if(entry.kind==='directory')dirEntries.push(entry.name);}
+    let renamed=0,skipped=0;
+    for(const p of papers){
+      const targetName=safeName((p.title||'未命名').slice(0,40))+(p.journal?'_'+safeName(p.journal.slice(0,15)):'');
+      let matched=dirEntries.find(d=>d===p.title||d===targetName||p.title.slice(0,30)===d.slice(0,30));
+      if(!matched||matched===targetName){skipped++;continue;}
+      const oldDir=await fileDir.getDirectoryHandle(matched);
+      const newDir=await fileDir.getDirectoryHandle(targetName,{create:true});
+      const subs=['稿件','附件','其他','审稿意见','审稿意见回复'];
+      // 收集所有需要迁移的子目录路径（含节点目录）
+      const subPaths=[];
+      const nodePattern=/^\d\d_/;
+      for await(const dirEntry of oldDir.values()){
+        if(dirEntry.kind!=='directory')continue;
+        if(nodePattern.test(dirEntry.name)){
+          for(const sub of subs){
+            try{await dirEntry.getDirectoryHandle(sub);subPaths.push({nodeDir:dirEntry.name,sub})}catch(e){}
+          }
+        }else if(subs.includes(dirEntry.name)){
+          subPaths.push({nodeDir:null,sub:dirEntry.name});
+        }
+      }
+      let hasContent=false;
+      for(const {nodeDir:nd,sub} of subPaths){
+        let sd;try{const ndh=nd?await oldDir.getDirectoryHandle(nd):oldDir;sd=await ndh.getDirectoryHandle(sub)}catch(e){continue;}
+        for await(const f of sd.values()){
+          if(f.kind!=='file')continue;
+          try{
+            const file=await f.getFile();
+            const targetParent=nd?(await newDir.getDirectoryHandle(nd,{create:true})):newDir;
+            const nh=await targetParent.getDirectoryHandle(sub,{create:true});
+            const wfh=await nh.getFileHandle(f.name,{create:true});
+            const w=await wfh.createWritable();
+            await w.write(await file.arrayBuffer());
+            await w.close();
+            hasContent=true;
+          }catch(e){}
+        }
+      }
+      if(hasContent){
+        for(const {nodeDir:nd,sub} of subPaths){
+          try{const ndh=nd?await oldDir.getDirectoryHandle(nd):oldDir;const sh=await ndh.getDirectoryHandle(sub);await sh.remove({recursive:true})}catch(e){}
+        }
+        for await(const dirEntry of oldDir.values()){
+          if(dirEntry.kind!=='directory')continue;
+          if(nodePattern.test(dirEntry.name)){
+            try{await dirEntry.remove({recursive:true})}catch(e){}
+          }
+        }
+        try{await oldDir.remove({recursive:true})}catch(e){}
+      }else{
+        try{await newDir.remove({recursive:true})}catch(e){}
+        skipped++;continue;
+      }
+      const pf=fileStore.papers[p.id];
+      if(pf&&pf.length)pf.forEach(f=>{f.paperFolder=targetName;});
+      const dirIdx=dirEntries.indexOf(matched);if(dirIdx>=0)dirEntries[dirIdx]=targetName;
+      renamed++;
+    }
+    if(renamed>0)saveFileStore();
+    toast(`✅ ${renamed} 个文件夹已重命名，${skipped} 个无需变更`);
+    switchMainTab('files');
+  }catch(e){toast('重命名失败: '+e.message,'error');}
+}
+/* ========== 仓库医生：检测并修复仓库结构完整性 ========== */
+async function doctorCheck(){
+  if(!repo.bound||!await ensureRepoAccess()){if(!await rebindIfNeeded()){toast('仓库权限已失效','error');return}}
+  const rh=repo.handle;if(!rh){toast('仓库未绑定','error');return}
+  const created=[],fixed=[],ok=[];
+  try{
+    // 1. 确保顶层目录齐全
+    const topDirs=['文件','投稿','审稿','评价'];
+    for(const d of topDirs){
+      try{await rh.getDirectoryHandle(d,{create:true});ok.push(d)}catch(e){toast('无法创建目录: '+d,'error');return}
+    }
+    const fileDir=await rh.getDirectoryHandle('文件');
+    const submitDir=await rh.getDirectoryHandle('投稿');
+    const reviewDir=await rh.getDirectoryHandle('审稿');
+    const evalDir=await rh.getDirectoryHandle('评价');
+    const subFolderNames=['稿件','附件','审稿意见','审稿意见回复'];
+
+    // 2. 逐论文检查
+    for(const p of papers){
+      const pname=safeName((p.title||'未命名').slice(0,40))+(p.journal?'_'+safeName(p.journal.slice(0,15)):'');
+      const paperFN=pname+'_数据.json';
+      const evalFN=pname+'_评价.json';
+
+      // 2a. 论文文件夹
+      let paperDir=null;
+      try{paperDir=await fileDir.getDirectoryHandle(pname)}catch(e){}
+      if(!paperDir){
+        try{paperDir=await fileDir.getDirectoryHandle(pname,{create:true});created.push('📁 文件/'+pname)}catch(e){}
+      }
+      if(paperDir){
+        // 2b. 按时间线确保节点子目录
+        if(p.timeline&&p.timeline.length){
+          const tl=p.timeline.slice().sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+          for(let i=0;i<tl.length;i++){
+            const nd=String(i+1).padStart(2,'0')+'_'+safeName((tl[i].label||'事件').slice(0,30));
+            let nodeDirH=null;
+            try{nodeDirH=await paperDir.getDirectoryHandle(nd)}catch(e){}
+            if(!nodeDirH){
+              try{nodeDirH=await paperDir.getDirectoryHandle(nd,{create:true});created.push('📁 文件/'+pname+'/'+nd)}catch(e){}
+            }
+            if(nodeDirH){
+              for(const sub of subFolderNames){
+                try{await nodeDirH.getDirectoryHandle(sub)}catch(e){
+                  try{await nodeDirH.getDirectoryHandle(sub,{create:true});created.push('📁 文件/'+pname+'/'+nd+'/'+sub)}catch(e){}
+                }
+              }
+            }
+          }
+        }
+        // 也确保扁平子目录（向后兼容）
+        for(const sub of subFolderNames){
+          try{await paperDir.getDirectoryHandle(sub)}catch(e){
+            try{await paperDir.getDirectoryHandle(sub,{create:true});created.push('📁 文件/'+pname+'/'+sub)}catch(e){}
+          }
+        }
+      }
+
+      // 2c. 投稿 JSON
+      try{await submitDir.getFileHandle(paperFN);ok.push('投稿/'+paperFN)}catch(e){
+        try{
+          const obj={paper:p,files:fileStore.papers[p.id]||[],exportDate:td()};
+          const blob=new Blob([JSON.stringify(obj,null,2)],{type:'application/json'});
+          const fh=await submitDir.getFileHandle(paperFN,{create:true});
+          const w=await fh.createWritable();await w.write(blob);await w.close();
+          created.push('📄 投稿/'+paperFN);
+        }catch(e2){fixed.push('⚠ 投稿/'+paperFN+' 创建失败: '+e2.message)}
+      }
+
+      // 2d. 评价 JSON
+      let ev=evaluations.find(e=>e.paperId===p.id);
+      if(!ev){
+        ev={id:uid(),paperId:p.id,journalName:p.journal,impactFactor:'',tiersCn:{cssci:false,cssciEx:false,pku:false,econTop:false},tiersEn:{absStar:0,ssciQ:'',casQ:''},submissionDate:p.submittedDate,myNotes:'',communityNotes:[]};
+        evaluations.push(ev);
+        fixed.push('🩺 评价内存: '+p.title);
+      }
+      try{await evalDir.getFileHandle(evalFN);ok.push('评价/'+evalFN)}catch(e){
+        try{
+          const blob=new Blob([JSON.stringify(ev,null,2)],{type:'application/json'});
+          const fh=await evalDir.getFileHandle(evalFN,{create:true});
+          const w=await fh.createWritable();await w.write(blob);await w.close();
+          created.push('📄 评价/'+evalFN);
+        }catch(e2){fixed.push('⚠ 评价/'+evalFN+' 创建失败: '+e2.message)}
+      }
+
+      // 2e. 内存中 fileStore 空数组
+      if(!fileStore.papers[p.id]){
+        fileStore.papers[p.id]=[];
+        fixed.push('🩺 文件数组: '+p.title);
+      }
+    }
+
+    // 3. 确保 _稿子菌配置.json
+    try{await rh.getFileHandle('_稿子菌配置.json');ok.push('_稿子菌配置.json')}catch(e){
+      try{
+        const cfg={labels,settings,version:'稿子菌v7.2',exportDate:td()};
+        const blob=new Blob([JSON.stringify(cfg,null,2)],{type:'application/json'});
+        const fh=await rh.getFileHandle('_稿子菌配置.json',{create:true});
+        const w=await fh.createWritable();await w.write(blob);await w.close();
+        created.push('📄 _稿子菌配置.json');
+      }catch(e2){}
+    }
+
+    saveAll();saveFileStore();
+    const msg=[];
+    if(created.length)msg.push('✅ 创建 '+created.length+' 项:\n'+created.slice(0,10).join('\n')+(created.length>10?'\n...等':''));
+    if(fixed.length)msg.push('🩺 修复 '+fixed.length+' 项:\n'+fixed.join('\n'));
+    if(!created.length&&!fixed.length)msg.push('✅ 仓库结构完整，无需修复');
+    toast(msg.join('\n\n'));
+    render();
+  }catch(e){toast('检测失败: '+e.message,'error')}
+}
+
+async function normalizeFileNames(){
+  if(repo.bound&&!await ensureRepoAccess()&&!await rebindIfNeeded()){toast('仓库权限已失效','error');return;}
+  const rh=repo.handle||fileStore.rootHandle;
+  try{
+    const fileDir=await rh.getDirectoryHandle('文件',{create:false});
+    const dirEntries=[];
+    for await(const entry of fileDir.values()){if(entry.kind==='directory')dirEntries.push(entry.name);}
+    const base=safeName((papers[0]?.title||'论文').slice(0,20));
+    let renamed=0,total=0;
+    for(const p of papers){
+      const pname=safeName((p.title||'未命名').slice(0,40))+(p.journal?'_'+safeName(p.journal.slice(0,15)):'');
+      let dirName=dirEntries.find(d=>d===p.title||d===pname||d.startsWith(p.title.slice(0,20)));
+      if(!dirName)continue;
+      const paperDir=await fileDir.getDirectoryHandle(dirName);
+      const pf=fileStore.papers[p.id]||[];
+      const subs=['稿件','附件','审稿意见','审稿意见回复'];
+      // 收集所有需要处理的子目录（含节点目录和平铺目录，向后兼容）
+      const subHandles=[];
+      const nodePattern=/^\d\d_/;
+      for await(const dirEntry of paperDir.values()){
+        if(dirEntry.kind!=='directory')continue;
+        if(nodePattern.test(dirEntry.name)){
+          for(const sub of subs){
+            try{const sh=await dirEntry.getDirectoryHandle(sub);subHandles.push({handle:sh,name:sub,nodeDir:dirEntry.name})}catch(e){}
+          }
+        }else if(subs.includes(dirEntry.name)){
+          subHandles.push({handle:dirEntry,name:dirEntry.name,nodeDir:null});
+        }
+      }
+      for(const {handle:sd,name:sub,nodeDir:nd} of subHandles){
+        const files=[];
+        for await(const f of sd.values()){if(f.kind==='file')files.push(f.name);}
+        files.sort();
+        const findEntry=(oldName)=>pf.find(f=>{
+          if(f.fileName!==oldName&&f.name!==oldName&&f.filePath!==oldName)return false;
+          if(nd)return f.nodeDir===nd;
+          return !f.nodeDir;
+        });
+        if(sub==='稿件'){
+          for(let i=0;i<files.length;i++){
+            total++;
+            const oldName=files[i];
+            const ext=oldName.split('.').pop();
+            const newName=String(i+1).padStart(2,'0')+'_'+p.title.slice(0,20)+'.'+ext;
+            if(oldName===newName)continue;
+            try{
+              const file=await (await sd.getFileHandle(oldName)).getFile();
+              const nh=await sd.getFileHandle(newName,{create:true});
+              const w=await nh.createWritable();await w.write(await file.arrayBuffer());await w.close();
+              await (await sd.getFileHandle(oldName)).remove();
+              const entry=findEntry(oldName);
+              if(entry){entry.fileName=newName;entry.name=newName;if(entry.filePath)entry.filePath=newName;}
+              renamed++;
+            }catch(e){}
+          }
+        }else if(sub==='附件'){
+          for(let i=0;i<files.length;i++){
+            total++;
+            const oldName=files[i];
+            const ext=oldName.split('.').pop();
+            const newName=String(i+1).padStart(2,'0')+'_附录.'+ext;
+            if(oldName===newName)continue;
+            try{
+              const file=await (await sd.getFileHandle(oldName)).getFile();
+              const nh=await sd.getFileHandle(newName,{create:true});
+              const w=await nh.createWritable();await w.write(await file.arrayBuffer());await w.close();
+              await (await sd.getFileHandle(oldName)).remove();
+              const entry=findEntry(oldName);
+              if(entry){entry.fileName=newName;entry.name=newName;if(entry.filePath)entry.filePath=newName;}
+              renamed++;
+            }catch(e){}
+          }
+        }else if(sub==='审稿意见'){
+          for(let i=0;i<files.length;i++){
+            total++;
+            const oldName=files[i];
+            const ext=oldName.split('.').pop();
+            const newName=String(i+1).padStart(2,'0')+'_审稿意见.'+ext;
+            if(oldName===newName)continue;
+            try{
+              const file=await (await sd.getFileHandle(oldName)).getFile();
+              const nh=await sd.getFileHandle(newName,{create:true});
+              const w=await nh.createWritable();await w.write(await file.arrayBuffer());await w.close();
+              await (await sd.getFileHandle(oldName)).remove();
+              const entry=findEntry(oldName);
+              if(entry){entry.fileName=newName;entry.name=newName;}
+              renamed++;
+            }catch(e){}
+          }
+        }else if(sub==='审稿意见回复'){
+          for(let i=0;i<files.length;i++){
+            total++;
+            const oldName=files[i];
+            const ext=oldName.split('.').pop();
+            const newName=String(i+1).padStart(2,'0')+'_意见回复.'+ext;
+            if(oldName===newName)continue;
+            try{
+              const file=await (await sd.getFileHandle(oldName)).getFile();
+              const nh=await sd.getFileHandle(newName,{create:true});
+              const w=await nh.createWritable();await w.write(await file.arrayBuffer());await w.close();
+              await (await sd.getFileHandle(oldName)).remove();
+              const entry=findEntry(oldName);
+              if(entry){entry.fileName=newName;entry.name=newName;if(entry.filePath)entry.filePath=newName;}
+              renamed++;
+            }catch(e){}
+          }
+        }
+      }
+    }
+    if(renamed>0)saveFileStore();
+    toast(`✅ ${renamed} 个文件已重命名（共扫描 ${total} 个）`);
+    switchMainTab('files');
+  }catch(e){toast('规范化失败: '+e.message,'error');}
+}
+
+
+/* ========== 全局状态 ========== */
+let papers=[], reviews=[], labels=[], evaluations=[];
+let settings={reminderPeriod:14, reminderEnabled:true, lastCheck:''};
+let mainTab='papers', groupBy='status', search='', editing=null, view='list', detailId=null;
+let selectMode=false, selectedIds=new Set(), searchTimeout=null;
+let filterYear='', filterMonth='', filterJournal='';
+let chartInstance1=null, chartInstance2=null, chartInstance3=null;
+
+/* ========== 示例数据（点击「加载示例数据」后从外部 example.json 读取，不嵌入保护示例隐私） ========== */
+const DEMO_DATA = {"papers":[],"reviews":[],"labels":["收稿","初审","外审","复审","退修","主编终审","格式修订","编辑校对","附加材料和数据提交","🎉录用","✌️已刊发","❌退稿"],"evaluations":[],"settings":{"reminderPeriod":14,"reminderEnabled":true,"lastCheck":""}};
+
+async function initDemoData(){
+  if('showOpenFilePicker' in window){
+    try{
+      const [fh]=await window.showOpenFilePicker({types:[{description:'JSON',accept:{'application/json':['.json']}}],multiple:false});
+      const file=await fh.getFile();
+      const text=await file.text();
+      const data=JSON.parse(text);
+      papers=data.papers||[];reviews=data.reviews||[];labels=data.labels||labels;evaluations=data.evaluations||[];
+      settings={...settings,...(data.settings||{})};
+      saveAll();setLastBackup();render();toast('已加载示例数据 🎉');return;
+    }catch(e){}
+  }
+  const inp=document.createElement('input');inp.type='file';inp.accept='.json,application/json';
+  inp.onchange=async()=>{const file=inp.files[0];if(!file)return;
+    const text=await file.text();
+    try{const data=JSON.parse(text);
+      papers=data.papers||[];reviews=data.reviews||[];labels=data.labels||labels;evaluations=data.evaluations||[];
+      settings={...settings,...(data.settings||{})};saveAll();setLastBackup();render();toast('已加载示例数据 🎉');
+    }catch(err){toast('文件格式错误，请选择 example.json','error');}};
+  inp.click();
+}
+async function loadAll(){
+  /* 发行版：首次打开且无任何数据时清空旧缓存（防止残留），否则保留用户数据 */
+  const hasData = localStorage.getItem('gz_papers') || localStorage.getItem('gz_reviews');
+  if(!hasData){
+    ['gz_papers','gz_reviews','gz_labels','gz_evaluations','gz_settings','pt_p2','pt_lb','pt_rv','papers'].forEach(k=>localStorage.removeItem(k));
+  }
+  try{papers=JSON.parse(localStorage.getItem('gz_papers'))||[]}catch(e){papers=[]}
+  // 确保所有论文都有 fileStore 空数组
+  papers.forEach(p=>{if(!fileStore.papers[p.id])fileStore.papers[p.id]=[]});
+  try{reviews=JSON.parse(localStorage.getItem('gz_reviews'))||[]}catch(e){reviews=[]}
+  try{labels=JSON.parse(localStorage.getItem('gz_labels'))||['收稿','初审','外审','复审','退修','主编终审','格式修订','编辑校对','附加材料和数据提交','🎉录用','✌️已刊发','❌退稿']}catch(e){labels=['收稿','初审','外审','复审','退修','主编终审','格式修订','编辑校对','附加材料和数据提交','🎉录用','✌️已刊发','❌退稿']}
+  try{evaluations=JSON.parse(localStorage.getItem('gz_evaluations'))||[]}catch(e){evaluations=[]}
+  try{settings=JSON.parse(localStorage.getItem('gz_settings'))||{reminderPeriod:14,reminderEnabled:true,lastCheck:''}}catch(e){settings={reminderPeriod:14,reminderEnabled:true,lastCheck:''}}
+  if(!papers.length&&!reviews.length)tryMigrateFromOld();
+  /* 仓库已绑定时，从仓库加载最新数据（仓库优先） */
+  if(repo.bound){await loadFromRepo();saveAll()}
+}
+function saveAll(){
+  localStorage.setItem('gz_papers',JSON.stringify(papers));
+  localStorage.setItem('gz_reviews',JSON.stringify(reviews));
+  localStorage.setItem('gz_labels',JSON.stringify(labels));
+  localStorage.setItem('gz_evaluations',JSON.stringify(evaluations));
+  localStorage.setItem('gz_settings',JSON.stringify(settings));
+  if(repo.bound)debouncedSync();
+}
+function persist(){saveAll();render()}
+function toast(m,type='success'){
+  document.querySelectorAll('.toast').forEach(t=>t.remove());
+  const t=document.createElement('div');
+  t.className='toast'+(type==='error'?' error':'');
+  t.textContent=m;document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2500);
+}
+
+/* ========== 旧数据迁移 ========== */
+function tryMigrateFromOld(){
+  try{
+    const old=localStorage.getItem('pt_p2');
+    if(old){
+      papers=JSON.parse(old);
+      labels=JSON.parse(localStorage.getItem('pt_lb')||'null')||labels;
+      reviews=JSON.parse(localStorage.getItem('pt_rv')||'null')||[];
+      toast('已从旧版自动迁移数据 ✓');
+    }
+  }catch(e){}
+  if(!papers.length){
+    try{
+      const res=localStorage.getItem('papers');
+      if(res){
+        const d=JSON.parse(res);
+        if(Array.isArray(d))papers=d;
+      }
+    }catch(e){}
+  }
+  // 确保所有paper有完整字段
+  papers=papers.map(p=>({...{files:[],reminder:{enabled:true,period:settings.reminderPeriod,paused:false}},...p}));
+  saveAll();
+}
+
+/* ========== 提醒检查 ========== */
+function checkReminders(){
+  if(!settings.reminderEnabled)return[];
+  const today=td();
+  const results=[];
+  papers.forEach(p=>{
+    if(p.reminder&&p.reminder.paused)return;
+    if(['published','rejected','withdrawn'].includes(p.status))return;
+    const period=p.reminder?.period||settings.reminderPeriod||14;
+    const tl=(p.timeline||[]).slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+    const lastDate=tl.length?tl[0].date:p.submittedDate;
+    if(!lastDate)return;
+    const days=dB(lastDate,today);
+    if(days>=period){
+      results.push({
+        paperId:p.id,title:p.title,journal:p.journal||'未知期刊',
+        lastDate,days,period,status:p.status,
+        critical:days>=period*2
+      });
+    }
+  });
+  return results;
+}
+
+/* ========== 渲染主入口 ========== */
+function render(){
+  const app=document.getElementById('app');
+  if(detailId){renderDetail();return}
+  
+  const isPapers=mainTab==='papers';
+  let baseData=isPapers?papers:(mainTab==='reviews'?reviews:[]);
+  
+  let filteredData=baseData.filter(item=>{
+    let match=true;
+    if(filterYear){const d=item.submittedDate||item.inviteDate;if(d&&d.slice(0,4)!==filterYear)match=false}
+    if(filterMonth){const d=item.submittedDate||item.inviteDate;if(d&&d.slice(5,7)!==filterMonth)match=false}
+    if(filterJournal&&item.journal!==filterJournal)match=false;
+    return match;
+  });
+  
+  let fl=filteredData.filter(p=>{
+    if(!search)return true;
+    const q=search.toLowerCase();
+    if(isPapers)return(p.title||'').toLowerCase().includes(q)||(p.journal||'').toLowerCase().includes(q)||(p.coAuthors||'').toLowerCase().includes(q)||(p.tags||[]).some(t=>t.toLowerCase().includes(q));
+    else return(p.paperTitle||'').toLowerCase().includes(q)||(p.journal||'').toLowerCase().includes(q);
+  });
+
+  let gps=[];
+  if((isPapers||mainTab==='reviews')&&view==='list'){
+    if(isPapers){
+      if(groupBy==='status')ST.forEach(s=>{const it=fl.filter(p=>p.status===s.key);if(it.length)gps.push({...s,items:it})});
+      else if(groupBy==='role')RL.forEach(r=>{const it=fl.filter(p=>p.role===r.key);if(it.length)gps.push({emoji:'👤',label:r.label,color:'#7c3aed',items:it})});
+      else if(groupBy==='journal'){const jm={};fl.forEach(p=>{const j=p.journal||'未定';if(!jm[j])jm[j]=[];jm[j].push(p)});Object.entries(jm).sort((a,b)=>b[1].length-a[1].length).forEach(([j,items])=>gps.push({emoji:'📰',label:j,color:'#0ea5e9',items}));}
+      else if(groupBy==='priority'){[3,2,1].forEach(pr=>{const it=fl.filter(p=>(p.priority||1)===pr);if(it.length)gps.push({emoji:pr===3?'🔴':pr===2?'🟡':'⚪',label:['','普通','重要','紧急'][pr],color:pr===3?'#ef4444':pr===2?'#f59e0b':'#94a3b8',items:it})})}
+      else if(fl.length)gps.push({emoji:'📚',label:'全部',color:'#7c3aed',items:fl});
+    }else{
+      if(groupBy==='status')RV_ST.forEach(s=>{const it=fl.filter(r=>r.status===s.key);if(it.length)gps.push({...s,items:it})});
+      else if(groupBy==='decision'){RV_DEC.slice(1).forEach(d=>{const it=fl.filter(r=>r.decision===d.key&&r.status==='completed');if(it.length)gps.push({...d,label:d.label+'决定',items:it})});const pend=fl.filter(r=>!r.decision||r.status!=='completed');if(pend.length)gps.push({emoji:'⏳',label:'待定',color:'#9ca3af',items:pend})}
+      else if(groupBy==='journal'){const jm={};fl.forEach(r=>{const j=r.journal||'未定';if(!jm[j])jm[j]=[];jm[j].push(r)});Object.entries(jm).sort((a,b)=>b[1].length-a[1].length).forEach(([j,items])=>gps.push({emoji:'📰',label:j,color:'#0ea5e9',items}));}
+      else if(fl.length)gps.push({emoji:'📚',label:'全部',color:'#059669',items:fl});
+    }
+  }
+
+  let stH='';
+  if(isPapers){
+    const cnt={};ST.forEach(s=>{cnt[s.key]=papers.filter(p=>p.status===s.key).length});
+    ST.forEach(s=>{if(cnt[s.key])stH+=`<div class="sc">${s.emoji} ${s.label} <b>${cnt[s.key]}</b></div>`});
+  }else if(mainTab==='reviews'){
+    const total=reviews.length,comp=reviews.filter(r=>r.status==='completed').length,pend=reviews.filter(r=>r.status==='pending').length;
+    stH=`<div class="sc">📪 总邀请 <b>${total}</b></div><div class="sc">✅ 已完成 <b>${comp}</b></div><div class="sc">⏳ 待处理 <b>${pend}</b></div>`;
+  }
+
+  let mainH='';
+  if(mainTab==='papers'||mainTab==='reviews'){
+    if(!fl.length&&!baseData.length)mainH=`<div class="ep"><div class="big">${isPapers?'📭':'📪'}</div><div class="mg">暂无${isPapers?'投稿':'审稿'}记录</div><div class="su" style="margin-bottom:16px">点击「+ 新建」手动添加，或：</div><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="bsav" onclick="initDemoData()" style="padding:10px 24px;font-size:13px">📋 加载示例数据</button><button class="bcan" onclick="doImport()" style="padding:10px 24px;font-size:13px;border-color:var(--ac);color:var(--ac);font-weight:700">📥 导入备份JSON</button></div></div>`;
+    else if(!fl.length)mainH=`<div class="ep"><div class="su">没有匹配的结果</div></div>`;
+    else gps.forEach((g,i)=>{let ch='';g.items.forEach(p=>ch+=isPapers?renderPaperCard(p):renderReviewCard(p));
+      mainH+=`<div class="gsec" style="animation-delay:${i*40}ms"><div class="gh"><span class="em">${g.emoji}</span><span class="lb">${g.label}</span><span class="cn" style="background:${isPapers?g.color:'#059669'}15;color:${isPapers?g.color:'#059669'}">${g.items.length}</span></div><div class="cg">${ch}</div></div>`;
+    });
+  }else if(mainTab==='dashboard'){
+    mainH=renderDashboard(filteredData);
+  }else if(mainTab==='progress'){
+    mainH=renderProgress();
+  }else if(mainTab==='reminders'){
+    mainH=renderReminders();
+  }else if(mainTab==='files'){
+    mainH=renderFilesView();
+  }else if(mainTab==='evaluations'){
+    mainH=renderEvaluations();
+  }
+
+  let dashContent='',filtContent='';
+  if(view==='list'&&mainTab==='papers'){
+    filtContent=renderFilterConsole();
+  }
+
+  let selectBar='';
+  if(selectMode&&view==='list'){
+    selectBar=`<div class="select-mode-bar"><span class="select-count">已选择 ${selectedIds.size} 项</span><div class="select-actions"><button class="ebtn" onclick="exitSelectMode()">取消</button><button class="ebtn" style="color:#dc2626;border-color:#fca5a5" onclick="batchDelete()">🗑 批量删除</button></div></div>`;
+  }
+
+  // 提醒横幅
+  let remBanner='';
+  const reminders=checkReminders();
+  if(reminders.length>0){
+    remBanner=`<div class="backup-bar"><div class="backup-banner" style="${reminders.some(r=>r.critical)?'background:#fef2f2;border-color:#fca5a5;color:#991b1b':''}">🔔 <b>${reminders.length}篇论文需要关注</b>（距上次状态更新已超期）<button class="bbtn" onclick="switchMainTab('reminders')">查看提醒</button></div></div>`;
+  }
+
+  let bkH='';
+  if(needsBackup()){
+    const lb=getLastBackup();
+    bkH=`<div class="backup-bar"><div class="backup-banner">⚠️ <b>${lb?'距上次备份已超过7天':'你还没有备份过数据'}，建议导出JSON到本地保存</b><button class="bbtn" id="bkExport">立即备份</button><span class="dismiss" id="bkDismiss" title="今日不再提醒">✕</span></div></div>`;
+  }
+
+  const newBtnClass=(mainTab==='papers'||mainTab==='reviews')?(mainTab==='reviews'?'rev':''):'';
+  const acTabCls=mainTab==='reviews'?'ac-rev':(mainTab==='papers'||mainTab==='dashboard')?'ac':'';
+
+  const repoH=repo.bound?`<span class="repo-name">📁 ${esc(repo.path)}</span>${repo.syncing?'<span class="repo-syncing">⏳ 同步中</span>':''}<button class="repo-btn sync" onclick="syncToRepo().then(render)">🔼 导出到仓库</button><button class="repo-btn import" onclick="loadFromRepo().then(render)">🔽 从仓库导入</button><button class="repo-btn neutral" onclick="doImport()">📥 导入</button><div class="export-dd"><button class="repo-btn neutral" onclick="toggleExportDd()">📤 导出 ▾</button><div class="export-dd-menu" id="exportDd" style="display:none"><div class="export-dd-item" onclick="doExport();toggleExportDd()">📄 导出备份JSON</div><div class="export-dd-item" onclick="doExportRepo();toggleExportDd()">📦 导出仓库数据(ZIP)</div></div></div><button class="repo-btn warn" onclick="unbindRepo()">🔗 解绑</button>`:repo.needsRebind?`<span style="font-size:12px;color:#92400e">🔒 仓库「${esc(repo.path)}」权限已失效</span><button class="repo-btn primary" onclick="bindRepo()" style="background:#f59e0b;border-color:#f59e0b">📂 重新绑定</button>`:`<button class="repo-btn primary" onclick="bindRepo()">📂 绑定仓库</button><button class="repo-btn neutral" onclick="doImport()">📥 导入</button><div class="export-dd"><button class="repo-btn neutral" onclick="toggleExportDd()">📤 导出 ▾</button><div class="export-dd-menu" id="exportDd" style="display:none"><div class="export-dd-item" onclick="doExport();toggleExportDd()">📄 导出备份JSON</div><div class="export-dd-item" onclick="doExportRepo();toggleExportDd()">📦 导出仓库数据(ZIP)</div></div></div>`;
+  const repoBannerH=repo.bound?'':`${bkH}`;
+  app.innerHTML=`
+  <div class="header"><div class="hi"><div class="ha"><div><h1>🧫 稿子菌</h1><p>${repo.bound?'学术投稿审稿管理 · 数据自动同步到仓库文件夹':'学术投稿审稿管理 · 数据存储在本地浏览器'}</p></div><div class="hb"><button class="hbtn ${newBtnClass}" id="xNew">+ 新建${mainTab==='reviews'?'审稿':'投稿'}</button><button class="hbtn" onclick="doctorCheck()" style="background:rgba(5,150,105,.2);border-color:rgba(5,150,105,.4)" title="检测并修复仓库结构完整性">🩺 仓库医生</button></div></div>${baseData.length?`<div class="sr">${stH}</div>`:''}</div></div>
+  <div class="repo-bar"><div class="repo-banner ${repo.bound?'bound':'unbound'}">${repoH}</div></div>
+  ${repoBannerH}${remBanner}
+  <div class="tabs">
+    <button class="tab tab-main ${mainTab==='papers'?'ac':''}" data-t="papers">📝 投稿</button>
+    <button class="tab tab-main ${mainTab==='reviews'?'ac-rev':''}" data-t="reviews">📪 审稿</button>
+    <button class="tab tab-main ${mainTab==='progress'?'ac':''}" data-t="progress">📈 投稿进度</button>
+    <button class="tab tab-main ${mainTab==='dashboard'?'ac':''}" data-t="dashboard">📊 统计</button>
+    <button class="tab tab-main ${mainTab==='files'?'ac':''}" data-t="files">📎 文件</button>
+    <button class="tab tab-main ${mainTab==='reminders'?'ac':''}" data-t="reminders">🔔 提醒</button>
+    <button class="tab tab-main ${mainTab==='evaluations'?'ac':''}" data-t="evaluations">📝 评价</button>
+  </div>
+  ${(mainTab==='papers'||mainTab==='reviews')?`
+  <div class="tabs" style="padding-top:0;border-bottom:none;margin-top:4px">
+    <button class="tab ${view==='list'?'ac':(mainTab==='reviews'?'ac-rev':'')}" data-v="list">📋 列表</button>
+    ${view==='list'?`<button class="tab" onclick="toggleSelectMode()" style="margin-left:auto;font-size:12px">${selectMode?'退出多选':'☑️ 多选'}</button>`:''}
+  </div>`:''}
+  ${view==='list'&&(mainTab==='papers'||mainTab==='reviews')?`
+  <div class="tb">
+    <div class="sbox"><span class="ic">🔍</span><input id="xSch" placeholder="搜索标题、期刊、合作者、标签..." value="${esc(search)}"></div>
+    <div class="gtog">
+      ${mainTab==='papers'?`
+      <button class="${groupBy==='status'?'ac':''}" data-g="status">状态</button>
+      <button class="${groupBy==='role'?'ac':''}" data-g="role">身份</button>
+      <button class="${groupBy==='journal'?'ac':''}" data-g="journal">期刊</button>
+      <button class="${groupBy==='priority'?'ac':''}" data-g="priority">优先级</button>
+      <button class="${groupBy==='none'?'ac':''}" data-g="none">全部</button>
+      `:`
+      <button class="${groupBy==='status'?'ac-rev':''}" data-g="status">状态</button>
+      <button class="${groupBy==='decision'?'ac-rev':''}" data-g="decision">决定</button>
+      <button class="${groupBy==='journal'?'ac-rev':''}" data-g="journal">期刊</button>
+      <button class="${groupBy==='none'?'ac-rev':''}" data-g="none">全部</button>`}
+    </div>
+  </div>`:''}
+  <div class="ct">${selectBar}${view==='list'?filtContent:''}${mainH}</div>
+  <div class="site-footer">稿子菌 v6.0 · 学术投稿管理工具 · ${td()}</div>`;
+
+  bindEvents();
+}
+
+/* ========== 论文卡片 ========== */
+function renderPaperCard(p){
+  const st=gs(p.status),rl=gr(p.role);
+  let qb='';ST.filter(s=>s.key!==p.status).forEach(s=>{qb+=`<button class="qb" title="${s.label}" data-id="${p.id}" data-st="${s.key}" onmouseenter="this.style.borderColor='${s.color}';this.style.background='${s.color}18'" onmouseleave="this.style.borderColor='';this.style.background=''">${s.emoji}</button>`});
+  let pri='';const pv=p.priority||1;for(let i=1;i<=3;i++)pri+=`<span class="star ${i<=pv?'':'off'}" data-id="${p.id}" data-pr="${i}">★</span>`;
+  const round=getWorkRound(p);const wc=getWorkCount(p.workId);
+  const roundH=wc>1?`<span class="round-badge">第${round}轮 / 共${wc}轮</span>`:'';
+  let histH='';
+  if(p.workId&&wc>1){
+    const chain=getWorkChain(p.workId);
+    histH='<div class="hist-chain">';
+    chain.forEach((cp,ci)=>{if(ci>0)histH+='<span class="hist-arrow">→</span>';histH+=`<span class="hist-link ${cp.id===p.id?'current':''}" data-goid="${cp.id}">${cp.journal||'?'} ${gs(cp.status).emoji}</span>`});
+    histH+='</div>';
+  }
+  let tlM='';
+  if(p.timeline&&p.timeline.length){
+    const last=p.timeline.slice(-3);
+    tlM='<div class="ctlm">';last.forEach(ev=>{tlM+=`<div class="ev"><span class="dot" style="background:${ev.color||'#94a3b8'}"></span>${fD(ev.date)} · ${esc(ev.label)}</div>`});
+    if(p.timeline.length>3)tlM+=`<div class="ev" style="opacity:.5">… 共${p.timeline.length}条</div>`;
+    tlM+='</div>';
+  }
+  let tagH='';if(p.tags&&p.tags.length){tagH='<div class="tags-row">';p.tags.forEach(t=>{tagH+=`<span class="tag-sm">${esc(t)}</span>`});tagH+='</div>'}
+  let metaH='';
+  if(p.submittedDate)metaH+=`<span>投稿: ${fD(p.submittedDate)}</span>`;
+  if(p.submittedDate&&!['accepted','rejected','withdrawn'].includes(p.status)){const d=dB(p.submittedDate,td());if(d>0)metaH+=`<span>已${d}天</span>`}
+  if(p.manuscriptId)metaH+=`<span>${esc(p.manuscriptId)}</span>`;
+  let exH='';if(p.trackingUrl)exH+=`<a class="clk" href="${esc(p.trackingUrl)}" target="_blank" onclick="event.stopPropagation()">🔗 追踪链接</a>`;
+
+  let selectCheckbox='';
+  if(selectMode)selectCheckbox=`<div class="pc-select"><input type="checkbox" class="pc-checkbox" ${selectedIds.has(p.id)?'checked':''} onchange="toggleSelect('${p.id}')" onclick="event.stopPropagation()"></div>`;
+
+  let accBtn='';
+  if(p.account?.username)accBtn=`<button class="cact-btn" onclick="event.stopPropagation();showAccountModal('${p.id}','paper')">🔑 账号</button>`;
+
+  // 文件数提示
+  const fc=(p.files||[]).length;
+  let filesBtn='';
+  if(fc>0)filesBtn=`<button class="cact-btn" onclick="event.stopPropagation();switchMainTab('files')" style="border-color:var(--ac);color:var(--ac)">📎 ${fc}</button>`;
+
+  return `<div class="pc" data-eid="${p.id}">${selectCheckbox}${roundH}<div class="ab" style="background:${st.color}"></div><div class="ctop"><div class="ctt">${esc(p.title)||'（未命名）'}</div></div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><div class="cjn">${p.journal?esc(p.journal):'<span style="opacity:.4;font-style:normal">期刊待定</span>'}</div><div class="tag-stack"><span class="sbdg" style="background:${st.color}15;color:${st.color};border:1px solid ${st.color}30">${st.emoji} ${st.label}</span><span class="rtag" style="background:${rl.bg};color:${rl.fg};border:1px solid ${rl.bd}">${rl.label}</span></div></div><div style="display:flex;justify-content:space-between;align-items:center"><div class="pri">${pri}</div><div class="qbs">${qb}</div></div>${metaH?`<div class="cmeta">${metaH}</div>`:''}${exH}${histH}${tagH}${tlM}<div class="cact"><div class="cact-left"><button class="cact-btn" onclick="event.stopPropagation();viewTimeline('${p.id}')">📅</button>${accBtn}${filesBtn}</div><button class="cact-btn cact-del" onclick="event.stopPropagation();deleteItem('${p.id}','paper')">🗑️</button></div></div>`;
+}
+
+function renderReviewCard(r){
+  const st=grv(r.status),dec=gdec(r.decision);
+  const isComp=r.status==='completed';
+  const dimmed=isComp?'dimmed':'';
+  let metaH='';
+  if(r.inviteDate)metaH+=`<span>邀请: ${fD(r.inviteDate)}</span>`;
+  let tlM='';
+  if(r.timeline&&r.timeline.length){
+    const last=r.timeline.slice(-2);
+    tlM='<div class="ctlm">';last.forEach(ev=>{tlM+=`<div class="ev"><span class="dot" style="background:${ev.color||'#94a3b8'}"></span>${fD(ev.date)} · ${esc(ev.label)}</div>`});tlM+='</div>';
+  }
+  let selectCheckbox='';
+  if(selectMode)selectCheckbox=`<div class="pc-select"><input type="checkbox" class="pc-checkbox" ${selectedIds.has(r.id)?'checked':''} onchange="toggleSelect('${r.id}')" onclick="event.stopPropagation()"></div>`;
+
+  let accBtn='';
+  if(r.account?.username)accBtn=`<button class="cact-btn rev" onclick="event.stopPropagation();showAccountModal('${r.id}','review')">🔑 账号</button>`;
+
+  return `<div class="pc ${dimmed}" data-rid="${r.id}">${selectCheckbox}<div class="ab" style="background:${isComp?dec.color:st.color}"></div><div class="ctop"><div class="ctt">${esc(r.paperTitle)||'（未命名稿件）'}</div></div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><div class="cjn">${r.journal?esc(r.journal):'<span style="opacity:.4;font-style:normal">期刊待定</span>'}</div><div class="tag-stack"><span class="sbdg" style="background:${st.color}15;color:${st.color};border:1px solid ${st.color}30">${st.emoji} ${st.label}</span>${r.decision&&isComp?`<span class="sbdg" style="background:${dec.color}15;color:${dec.color};border:1px solid ${dec.color}30;font-size:9px">${dec.emoji} ${dec.label}</span>`:''}</div></div>${metaH?`<div class="cmeta">${metaH}</div>`:''}${r.link?`<a class="clk" href="${esc(r.link)}" target="_blank" onclick="event.stopPropagation()">🔗 审稿链接</a>`:''}${tlM}<div class="cact"><div class="cact-left"><button class="cact-btn rev" onclick="event.stopPropagation();completeReview('${r.id}')">${isComp?'✏️ 修改决定':'✅ 完成'}</button>${accBtn}</div><button class="cact-btn cact-del" onclick="event.stopPropagation();deleteItem('${r.id}','review')">🗑️</button></div></div>`;
+}
+
+function renderDashboard(data){
+  const isPapers=(mainTab==='papers'||mainTab==='dashboard');
+  if(!data.length)return '<div class="ep"><div class="big">📊</div><div class="mg">暂无数据</div></div>';
+  let h='<div class="dash">';
+  const total=data.length;
+  const acc=data.filter(p=>p.status==='accepted').length;
+  const rej=data.filter(p=>p.status==='rejected').length;
+  const active=data.filter(p=>!['accepted','rejected','withdrawn'].includes(p.status)).length;
+  const avgP=data.filter(p=>p.submittedDate&&['accepted','rejected'].includes(p.status)&&p.timeline&&p.timeline.length>1);
+  let avg=0;if(avgP.length){avg=Math.round(avgP.reduce((s,p)=>{const l=p.timeline[p.timeline.length-1];return s+dB(p.submittedDate,l.date||td())},0)/avgP.length)}
+  const rate=acc+rej>0?Math.round(acc/(acc+rej)*100):0;
+  h+=`<div class="dash-c"><div class="num">${total}</div><div class="lbl">总投稿</div></div><div class="dash-c"><div class="num">${active}</div><div class="lbl">进行中</div></div><div class="dash-c"><div class="num" style="color:#22c55e">${acc}</div><div class="lbl">已录用</div></div><div class="dash-c"><div class="num" style="color:#ef4444">${rej}</div><div class="lbl">被拒</div></div><div class="dash-c"><div class="num">${avg||'—'}</div><div class="lbl">均审稿天数</div></div><div class="dash-c"><div class="num" style="color:#22c55e">${rate}%</div><div class="lbl">录用率</div></div>`;
+  h+='</div>';
+  h+='<div class="chart-grid"><div class="chart-box"><h4>趋势分析</h4><div class="chart-container"><canvas id="chartTrend"></canvas></div></div><div class="chart-box"><h4>状态分布</h4><div class="chart-container"><canvas id="chartPie"></canvas></div></div></div>';
+  setTimeout(()=>drawCharts(data),100);
+  return h;
+}
+function renderFilterConsole(){
+  const isPapers=(mainTab==='papers'||mainTab==='dashboard');
+  const baseData=isPapers?papers:reviews;
+  const years=[...new Set(baseData.map(x=>x.submittedDate||x.inviteDate).filter(d=>d).map(d=>d.slice(0,4)))].sort().reverse();
+  let months=[];
+  if(filterYear){
+    months=[...new Set(baseData.filter(x=>{const d=x.submittedDate||x.inviteDate;return d&&d.slice(0,4)===filterYear}).map(x=>{const d=x.submittedDate||x.inviteDate;return d?d.slice(5,7):''}))].filter(m=>m).sort();
+  }
+  const journals=[...new Set(baseData.map(x=>x.journal).filter(j=>j))].sort();
+  return `<div class="filt-console"><div class="filt-grp"><label>年份</label><select id="filtYear" onchange="updateFilter('year',this.value)"><option value="">全部</option>${years.map(y=>`<option value="${y}" ${filterYear===y?'selected':''}>${y}</option>`).join('')}</select></div><div class="filt-grp"><label>月份</label><select id="filtMonth" onchange="updateFilter('month',this.value)" ${!filterYear?'disabled':''}><option value="">全部</option>${months.map(m=>`<option value="${m}" ${filterMonth===m?'selected':''}>${m}月</option>`).join('')}</select></div><div class="filt-grp"><label>期刊</label><select id="filtJour" onchange="updateFilter('journal',this.value)"><option value="">全部期刊</option>${journals.map(j=>`<option value="${esc(j)}" ${filterJournal===j?'selected':''}>${esc(j)}</option>`).join('')}</select></div><button class="ebtn" onclick="clearFilters()" style="height:fit-content">重置筛选</button></div>`;
+}
+
+function drawCharts(data){
+  if(!data.length)return;
+  const ctx1=document.getElementById('chartTrend'),ctx2=document.getElementById('chartPie');
+  if(!ctx1||!ctx2)return;
+  if(chartInstance1)chartInstance1.destroy();
+  if(chartInstance2)chartInstance2.destroy();
+  Chart.defaults.font.family="'Noto Sans SC',sans-serif";Chart.defaults.font.size=11;
+  const dateMap={};data.forEach(x=>{const d=x.submittedDate||x.inviteDate;if(!d)return;const k=d.slice(0,7);dateMap[k]=(dateMap[k]||0)+1});
+  const sortedDates=Object.keys(dateMap).sort();
+  chartInstance1=new Chart(ctx1,{type:'line',data:{labels:sortedDates.map(k=>k.slice(5)+'月'),datasets:[{label:'投稿数',data:sortedDates.map(k=>dateMap[k]),borderColor:'#7c3aed',backgroundColor:'rgba(124,58,237,0.1)',fill:true,tension:0.4,pointRadius:6,pointHoverRadius:8,pointBackgroundColor:'#7c3aed',pointBorderColor:'#fff',pointBorderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},datalabels:{display:true,align:'top',offset:4,font:{weight:'bold'},formatter:v=>v}},scales:{y:{beginAtZero:true,ticks:{stepSize:1}}}}});
+  const statData=ST.map(s=>data.filter(x=>x.status===s.key).length);
+  const statLabels=ST.map(s=>s.label),statColors=ST.map(s=>s.color);
+  chartInstance2=new Chart(ctx2,{type:'doughnut',data:{labels:statLabels,datasets:[{data:statData,backgroundColor:statColors,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'right',labels:{boxWidth:12}},datalabels:{display:true,formatter:(v,ctx)=>v>0?v:'',color:'#fff',font:{weight:'bold',size:11}}}}});
+}
+
+/* ========== 投稿进度 ========== */
+let _progressPaperId='';
+function renderProgress(){
+  if(!papers.length)return '<div class="ep"><div class="big">📈</div><div class="mg">暂无投稿记录</div><div class="su">先添加投稿论文，然后在此查看投稿进度</div></div>';
+  const selectedId=_progressPaperId||papers[0].id;
+  const p=papers.find(x=>x.id===selectedId);
+  if(!p){_progressPaperId='';return renderProgress()}
+  const st=gs(p.status);
+  const tl=(p.timeline||[]).slice().sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+  const totalDays=p.submittedDate?dB(p.submittedDate,tl.length&&tl[tl.length-1].date?tl[tl.length-1].date:td()):0;
+  let selOpts='';
+  papers.forEach(pp=>{
+    selOpts+=`<option value="${pp.id}" ${pp.id===selectedId?'selected':''}>${esc(pp.title||'未命名').slice(0,60)} ${pp.journal?'· '+esc(pp.journal.slice(0,20)):''}</option>`;
+  });
+  let tlH='';
+  if(tl.length){
+    tl.forEach((ev,i)=>{
+      let dur='';if(i>0&&tl[i-1].date&&ev.date){const d=dB(tl[i-1].date,ev.date);if(d>0)dur=`间隔 ${d} 天`}
+      const rc=ev.reviewComments||[],rr=ev.reviewReplies||[],ms=ev.manuscripts||[],sp=ev.supplements||[];
+      const allFiles=fileStore.papers[p.id]||[];
+      const evFiles=[];
+      rc.forEach(f=>{const m=allFiles.find(x=>x.id===f.id||x.id===f);if(m)evFiles.push({...m,icon:'🕵️',clr:'#7c3aed'})});
+      rr.forEach(f=>{const m=allFiles.find(x=>x.id===f.id||x.id===f);if(m)evFiles.push({...m,icon:'📝',clr:'#059669'})});
+      ms.forEach(fid=>{const m=allFiles.find(x=>x.id===fid);if(m)evFiles.push({...m,icon:'📄',clr:'#d97706'})});
+      sp.forEach(fid=>{const m=allFiles.find(x=>x.id===fid);if(m)evFiles.push({...m,icon:'📋',clr:'#0891b2'})});
+      let fh='';
+      if(evFiles.length){
+        fh=evFiles.map(f=>`<div class="pf-item" onclick="navigateToFile('${p.id}','${f.id}')" style="cursor:pointer" title="点击跳转到文件栏目"><span class="pf-icon">${f.icon||'📄'}</span><span class="pf-name">${esc(f.fileName||f.name||'文件')}</span></div>`).join('');
+      }else{
+        fh='<div class="pf-empty">暂无文件</div>';
+      }
+      tlH+=`<div class="prog-ev"><div class="dot" style="box-shadow-color:${ev.color||'#94a3b8'};background:${ev.color||'#94a3b8'}"></div><div class="prog-ev-main"><div class="date">${fD(ev.date)}</div><div class="label">${esc(ev.label)}</div>${ev.note?`<div class="note">${esc(ev.note)}</div>`:''}${dur?`<div class="dur">${dur}</div>`:''}<div class="prog-upload-btns"><button class="prog-up-btn comment" onclick="uploadReviewFile('${p.id}','${ev.id}','comment')" title="上传审稿意见">🕵️ 审稿意见</button><button class="prog-up-btn reply" onclick="uploadReviewFile('${p.id}','${ev.id}','reply')" title="上传意见回复">📝 意见回复</button><button class="prog-up-btn manu" onclick="uploadProgressFile('${p.id}','${ev.id}','manuscript')" title="上传稿件">📄 稿件</button><button class="prog-up-btn supp" onclick="uploadProgressFile('${p.id}','${ev.id}','supplement')" title="上传附件">📋 附件</button></div></div><div class="prog-ev-files"><div class="pf-title">📎 文件</div>${fh}</div></div>`;
+    });
+  }else{
+    tlH='<div style="color:var(--t3);font-size:13px;padding:20px 0;text-align:center">暂无时间线记录，请在编辑投稿中添加</div>';
+  }
+  return `<div class="progress-paper-select"><label style="font-size:12px;font-weight:700;color:var(--t2);display:block;margin-bottom:6px">📄 选择论文</label><select id="progPaperSel" onchange="switchProgressPaper(this.value)">${selOpts}</select></div>
+  <div class="progress-timeline"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px"><div><h3>📅 投稿进度 · ${esc(p.title||'未命名')}</h3><div class="sub">${p.journal?esc(p.journal)+' · ':''}${st.emoji} ${st.label}${totalDays?` · 共 ${totalDays} 天`:''}</div></div><button class="ebtn" onclick="editing=papers.find(x=>x.id==='${p.id}');showForm()" style="font-size:12px">✏️ 编辑</button><button class="ebtn" onclick="syncProgressFiles('${p.id}','${safeName((p.title||'未命名').slice(0,40))+(p.journal?'_'+safeName(p.journal.slice(0,15)):'')}')" style="font-size:11px;padding:4px 10px;background:#3b82f6;border-color:#3b82f6;color:#fff">📂 从仓库同步</button></div><div style="position:relative;padding-left:10px">${tlH}</div></div>`;
+}
+function switchProgressPaper(id){_progressPaperId=id;render()}
+let _progFilePicker=null;
+function uploadReviewFile(pid,evid,type){
+  if(!fileStore.rootPath&&!repo.handle){toast(repo.bound?'仓库权限已失效，请重新绑定':'请先绑定仓库文件夹','error');bindRepo();return;}
+  if(!_progFilePicker){_progFilePicker=document.createElement('input');_progFilePicker.type='file';_progFilePicker.accept='.pdf,.docx,.doc,.xlsx,.xls,.dta,.txt,.jpg,.png';_progFilePicker.style.display='none';document.body.appendChild(_progFilePicker);}
+  _progFilePicker.onchange=async()=>{
+    const file=_progFilePicker.files[0];if(!file)return;
+    const p=papers.find(x=>x.id===pid);if(!p){_progFilePicker.value='';return}
+    const pname=safeName((p.title||'未命名').slice(0,40))+(p.journal?'_'+safeName(p.journal.slice(0,15)):'');
+    const folderName=type==='comment'?'审稿意见':'审稿意见回复';
+    const ftype=type==='comment'?'review_comment':'review_reply';
+    const nodeDir=getNodeDir(p,evid);if(!nodeDir){toast('未找到对应时间线节点','error');_progFilePicker.value='';return}
+    const sd=await getOrCreateNested(pid,pname,[nodeDir,folderName]);
+    if(!sd){toast('无法访问仓库文件夹','error');_progFilePicker.value='';return}
+    const ext=file.name.split('.').pop()||'';
+    let maxIdx=0;
+    try{for await(const f of sd.values()){if(f.kind!=='file')continue;const m=f.name.match(type==='comment'?/^(\d+)_审稿意见/:/^(\d+)_意见回复/);if(m){const n=parseInt(m[1],10);if(n>maxIdx)maxIdx=n;}}}catch(e){}
+    const prefix=type==='comment'?'审稿意见':'意见回复';
+    const safeFName=String(maxIdx+1).padStart(2,'0')+'_'+prefix+'.'+ext;
+    try{
+      const fh=await sd.getFileHandle(safeFName,{create:true});
+      const w=await fh.createWritable();await w.write(file);await w.close();
+      const entry={id:uid(),fileName:safeFName,filePath:safeFName,type:ftype,size:file.size,folder:folderName,paperFolder:pname,nodeDir,uploadDate:td()};
+      if(!fileStore.papers[pid])fileStore.papers[pid]=[];
+      fileStore.papers[pid].push(entry);
+      const ev=p.timeline.find(e=>e.id===evid);
+      if(ev){
+        if(type==='comment'){if(!ev.reviewComments)ev.reviewComments=[];ev.reviewComments.push(entry)}
+        else{if(!ev.reviewReplies)ev.reviewReplies=[];ev.reviewReplies.push(entry)}
+      }
+      saveFileStore();saveAll();toast(`${folderName}已上传 → ${nodeDir}/${folderName}`);render();
+    }catch(e){toast('上传失败: '+e.message,'error')}
+    _progFilePicker.value='';
+  };
+  _progFilePicker.click();
+}
+function uploadProgressFile(pid,evid,cat){
+  if(!fileStore.rootPath&&!repo.handle){toast(repo.bound?'仓库权限已失效，请重新绑定':'请先绑定仓库文件夹','error');bindRepo();return;}
+  if(!_progFilePicker){_progFilePicker=document.createElement('input');_progFilePicker.type='file';_progFilePicker.accept='.pdf,.docx,.doc,.xlsx,.xls,.dta,.txt,.jpg,.png';_progFilePicker.style.display='none';document.body.appendChild(_progFilePicker);}
+  _progFilePicker.onchange=async()=>{
+    const file=_progFilePicker.files[0];if(!file)return;
+    const p=papers.find(x=>x.id===pid);if(!p){_progFilePicker.value='';return}
+    const pname=safeName((p.title||'未命名').slice(0,40))+(p.journal?'_'+safeName(p.journal.slice(0,15)):'');
+    const ftype=cat==='manuscript'?'manuscript_pdf':'supplement_pdf';
+    const entry=await addPaperFile(pid,pname,ftype,file,evid);
+    if(entry){
+      const ev=p.timeline.find(e=>e.id===evid);
+      if(ev){
+        if(cat==='manuscript'){if(!ev.manuscripts)ev.manuscripts=[];ev.manuscripts.push(entry.id)}
+        else{if(!ev.supplements)ev.supplements=[];ev.supplements.push(entry.id)}
+      }
+      saveAll();
+      toast(`${cat==='manuscript'?'稿件':'附件'}已上传 → ${entry.nodeDir||''}/${entry.folder}`);render();
+    }
+    _progFilePicker.value='';
+  };
+  _progFilePicker.click();
+}
+
+/* ========== 提醒模块 ========== */
+function renderReminders(){
+  const reminders=checkReminders();
+  let h=`<div class="rem-conf"><h4>⚙️ 提醒设置</h4><div class="rem-row"><span>提醒周期（天）:</span><input type="number" id="remPeriod" value="${settings.reminderPeriod}" min="7" max="60" onchange="updateReminderSetting()"></div><div class="rem-row"><span>启用提醒:</span><label class="rem-toggle"><input type="checkbox" ${settings.reminderEnabled?'checked':''} onchange="toggleReminder()"><span class="slider"></span></label></div><div style="font-size:10px;color:var(--t3);margin-top:8px">距最近时间线事件 ≥ 设定天数时触发提醒</div></div>`;
+  if(reminders.length===0){
+    h+=`<div class="ep"><div class="big">✅</div><div class="mg">暂无需要提醒的论文</div><div class="su">所有论文都处于活跃状态</div></div>`;
+  }else{
+    h+='<div style="margin-top:16px">';
+    reminders.forEach(r=>{
+      h+=`<div class="reminder-card ${r.critical?'critical':''}"><div class="reminder-icon">${r.critical?'🚨':'📬'}</div><div class="reminder-body"><div class="rt">${esc(r.title)}</div><div class="rd">📰 ${esc(r.journal)} · 上次更新 ${fD(r.lastDate)} · <b>已${r.days}天</b></div></div><div class="reminder-actions"><button class="ebtn" onclick="pauseReminder('${r.paperId}')" style="font-size:10px">⏸️ 暂停</button><button class="ebtn" onclick="viewTimeline('${r.paperId}')" style="font-size:10px">📋 查看</button></div></div>`;
+    });
+    h+='</div>';
+  }
+  return h;
+}
+function updateReminderSetting(){
+  const v=parseInt(document.getElementById('remPeriod').value)||14;
+  settings.reminderPeriod=Math.max(7,Math.min(60,v));
+  saveAll();
+  toast(`提醒周期已更新为 ${settings.reminderPeriod} 天`);
+}
+function toggleReminder(){
+  settings.reminderEnabled=!settings.reminderEnabled;
+  saveAll();
+  toast(settings.reminderEnabled?'提醒已启用':'提醒已禁用');
+}
+function pauseReminder(pid){
+  const p=papers.find(x=>x.id===pid);
+  if(p){
+    if(!p.reminder)p.reminder={enabled:true,period:settings.reminderPeriod,paused:false};
+    p.reminder.paused=!p.reminder.paused;
+    saveAll();
+    toast(p.reminder.paused?'已暂停该论文提醒':'已恢复该论文提醒');
+  }
+}
+
+/* ========== 文件模块 ========== */
+function pfLabel(ft){return FT[ft]?FT[ft].label:FT.other.label;}
+function pfBadge(ft){if(!FT[ft])return'';const b=FT[ft].badge.split(';');return `background:${b[0]};color:${b[1]}`;}
+function renderFilesView(){
+  const rootOk=repo.bound&&repo.handle?true:!!fileStore.rootPath;
+  const repoLabel=repo.bound?esc(repo.path)+'/文件':(fileStore.rootPath?esc(fileStore.rootPath):'');
+  let h=`<div style="margin-bottom:14px">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;background:${rootOk?'#f0fdf4':'#fef9c3'};border:1px solid ${rootOk?'#86efac':'#fde047'};border-radius:10px;padding:10px 14px">
+      <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:${rootOk?'#166534':'#92400e'}">
+        <span>${repo.bound?'🗄️':'📁'}</span>
+        <span style="font-weight:600">${repo.bound?'仓库文件路径：':'存储文件夹：'}</span>
+        <span style="font-family:monospace;font-size:12px;max-width:400px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${rootOk?repoLabel:'<span style="opacity:.6">未绑定仓库（请在顶部栏点击「绑定仓库」）</span>'}</span>
+      </div>
+      ${!rootOk?`<button class="ebtn" onclick="bindRepo()" style="font-size:12px;padding:5px 12px;background:#f59e0b;border-color:#f59e0b;color:#fff">📂 绑定仓库</button>`:`<button class="ebtn" onclick="normalizeFileNames()" style="font-size:11px;padding:4px 10px" title="将稿件和附件统一重命名为 序号_论文名 / 序号_附录 / 序号_审稿意见 / 序号_意见回复">📝 规范化文件名</button><button class="ebtn" onclick="renameRepoDirs()" style="font-size:11px;padding:4px 10px" title="将仓库文件/下的论文文件夹统一重命名为标准格式">🔧 规范化文件夹名</button>`}
+    </div>
+    ${rootOk?`<div style="font-size:11px;color:var(--t3);margin-top:5px;padding-left:4px">📋 论文文件保存至：${repo.bound?'仓库文件夹 / 文件 / <b>{论文标题}</b> / {节点_事件名} / {稿件|附件|审稿意见|意见回复}':'根文件夹 / <b>{论文标题}</b> / {节点_事件名} / {稿件|附件|审稿意见|意见回复}'}</div>`:''}
+  </div>`;
+  if(!papers.length)return h+'<div class="ep"><div class="big">📎</div><div class="mg">暂无投稿记录</div><div class="su">先添加论文，然后在此管理稿件文件</div></div>';
+  papers.forEach(p=>{
+    const pname=safeName((p.title||'未命名').slice(0,40))+(p.journal?'_'+safeName(p.journal.slice(0,15)):'');
+    const pfs=(fileStore.papers[p.id]||[]);
+    const fc=pfs.length;
+    const makeRow=(f)=>`<div class="file-row" data-file-id="${f.id}" style="cursor:pointer" title="点击打开: ${esc(f.fileName)}" onclick="openPaperFile(fileStore.papers['${p.id}'].find(x=>x.id==='${f.id}'))">
+        <span class="file-icon">${f.type==='review_comment'?'🕵️':f.type==='review_reply'?'📝':f.type&&f.type.includes('pdf')?'📄':f.type&&f.type.includes('docx')?'📝':'📁'}</span>
+        <div class="file-info">
+          <div class="fn">${esc(f.fileName)}</div>
+          <div class="fm"><span class="file-badge" style="${pfBadge(f.type)}">${pfLabel(f.type)}</span> ${f.size?fmtSize(f.size):''} · ${fD(f.uploadDate)}</div>
+        </div>
+        <div class="file-actions"><button class="ebtn" onclick="event.stopPropagation();deletePaperFile('${p.id}','${f.id}')" style="color:#ef4444;font-size:11px;padding:3px 7px">🗑</button></div>
+      </div>`;
+    const mkEmpty=(s)=>`<div style="font-size:11px;color:var(--t3);padding:4px 0 2px">${s}</div>`;
+    // 按节点分组（有 nodeDir 的文件用节点分组，无 nodeDir 的文件归入「未归类」）
+    const hasNodeDirs=pfs.some(f=>f.nodeDir);
+    let groups=null;
+    if(hasNodeDirs){
+      groups=new Map();
+      const tl=(p.timeline||[]);
+      // 按时间线顺序初始化节点分组
+      tl.forEach((ev,i)=>{const nd=String(i+1).padStart(2,'0')+'_'+safeName(ev.label);groups.set(nd,[])});
+      pfs.forEach(f=>{
+        const key=f.nodeDir||'__flat__';
+        if(!groups.has(key))groups.set(key,[]);
+        groups.get(key).push(f);
+      });
+    }
+    h+=`<div class="eval-card">
+      <div class="eval-header">
+        <div class="eval-journal" style="font-size:13px">${esc(p.title||'（未命名）').slice(0,50)}</div>
+        <div style="display:flex;gap:4px;align-items:center">
+          <span class="sbdg" style="font-size:10px">${gs(p.status).emoji} ${gs(p.status).label}</span>
+          ${fc>0?`<span style="font-size:10px;font-weight:700;background:var(--ac);color:#fff;padding:1px 7px;border-radius:10px">${fc}</span>`:''}
+        </div>
+      </div>`;
+    if(hasNodeDirs&&groups){
+      groups.forEach((groupFiles,nd)=>{
+        if(!groupFiles.length&&nd!=='__flat__')return;
+        let manH='',supH='',revH='',repH='';
+        groupFiles.forEach(f=>{
+          const row=makeRow(f);
+          if(f.type==='review_comment')revH+=row;
+          else if(f.type==='review_reply')repH+=row;
+          else if(f.type&&(f.type==='manuscript_pdf'||f.type==='manuscript_docx'))manH+=row;
+          else supH+=row;
+        });
+        const ndLabel=nd==='__flat__'?'📁 未归类':`📅 ${nd}`;
+        const ndStyle=nd==='__flat__'?'margin-top:10px;padding-top:10px;border-top:1px dashed var(--border)':'margin-top:10px;padding-top:8px;border-top:1px solid var(--border)';
+        h+=`<div style="${ndStyle}"><div style="font-size:12px;font-weight:700;color:var(--ac);margin-bottom:6px">${ndLabel}${groupFiles.length?` <span style="font-weight:400;font-size:10px;color:var(--t3)">(${groupFiles.length})</span>`:''}</div>`;
+        h+=`<div style="margin:4px 0"><div style="font-size:10px;font-weight:700;color:var(--t2);margin-bottom:3px">📄 稿件${manH?'':'（暂无）'}</div>${manH||mkEmpty('暂无稿件')}</div>`;
+        h+=`<div style="margin-bottom:4px"><div style="font-size:10px;font-weight:700;color:var(--t2);margin-bottom:3px">📋 附件${supH?'':'（暂无）'}</div>${supH||mkEmpty('暂无附件')}</div>`;
+        h+=`<div style="margin-bottom:4px"><div style="font-size:10px;font-weight:700;color:var(--t2);margin-bottom:3px">🕵️ 审稿意见${revH?'':'（暂无）'}</div>${revH||mkEmpty('暂无审稿意见')}</div>`;
+        h+=`<div style="margin-bottom:4px"><div style="font-size:10px;font-weight:700;color:var(--t2);margin-bottom:3px">📝 意见回复${repH?'':'（暂无）'}</div>${repH||mkEmpty('暂无意见回复')}</div>`;
+        h+=`</div>`;
+      });
+    }else{
+      let manH='',supH='',revH='',repH='';
+      pfs.forEach(f=>{
+        const row=makeRow(f);
+        if(f.type==='review_comment')revH+=row;
+        else if(f.type==='review_reply')repH+=row;
+        else if(f.type&&(f.type==='manuscript_pdf'||f.type==='manuscript_docx'))manH+=row;
+        else supH+=row;
+      });
+      h+=`<div style="margin:8px 0"><div style="font-size:10px;font-weight:700;color:var(--t2);margin-bottom:4px">📄 稿件${manH?'':'（暂无）'}</div>${manH||mkEmpty('暂无稿件')}</div>`;
+      h+=`<div style="margin-bottom:8px"><div style="font-size:10px;font-weight:700;color:var(--t2);margin-bottom:4px">📋 附件${supH?'':'（暂无）'}</div>${supH||mkEmpty('暂无附件')}</div>`;
+      h+=`<div style="margin-bottom:8px"><div style="font-size:10px;font-weight:700;color:var(--t2);margin-bottom:4px">📋 审稿意见${revH?'':'（暂无）'}</div>${revH||mkEmpty('暂无审稿意见')}</div>`;
+      h+=`<div style="margin-bottom:8px"><div style="font-size:10px;font-weight:700;color:var(--t2);margin-bottom:4px">📝 意见回复${repH?'':'（暂无）'}</div>${repH||mkEmpty('暂无意见回复')}</div>`;
+    }
+    h+=`<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:8px;padding-top:8px;border-top:1px solid var(--border)">
+      <button class="ebtn" onclick="syncRepoFiles('${p.id}','${pname}')" style="font-size:11px;padding:4px 10px;background:#3b82f6;border-color:#3b82f6;color:#fff">📂 同步仓库文件</button>
+      <button class="ebtn" onclick="syncPaperToRepo('${p.id}','${pname}')" style="font-size:11px;padding:4px 10px;background:var(--ac-rev);border-color:var(--ac-rev);color:#fff">🌈 同步到仓库</button>
+    </div>
+  </div>`;
+  });
+  h+=`<input type="file" id="filePicker" accept=".pdf,.docx,.doc,.xlsx,.xls,.dta,.zip" style="display:none" onchange="handleFilePick(this)">`;
+  return h;
+}
+let _fp={pid:null,pname:null,ftype:null};
+function triggerFilePick(pid,pname,cat){
+  if(!fileStore.rootPath&&!repo.handle){toast(repo.bound?'仓库权限已失效，请重新绑定':'请先绑定仓库文件夹','error');bindRepo();return;}
+  _fp={pid,pname,ftype:cat==='manuscript'?'manuscript_pdf':'supplement_pdf'};
+  document.getElementById('filePicker').click();
+}
+async function handleFilePick(inp){
+  if(!inp.files.length)return;
+  const {pid,pname,ftype}=_fp;
+  await addPaperFile(pid,pname,ftype,inp.files[0]);
+  _fp={pid:null,pname:null,ftype:null};
+  inp.value='';
+  switchMainTab('files');
+}
+function fmtSize(b){if(!b)return'';if(b<1024)return b+'B';if(b<1048576)return(b/1024).toFixed(1)+'KB';return(b/1048576).toFixed(1)+'MB';}
+
+/* ========== 评价模块 ========== */
+function renderEvaluations(){
+  let evals=evaluations;
+  let evChanged=false;
+  papers.forEach(p=>{
+    const ex=evals.find(e=>e.paperId===p.id);
+    if(!ex&&p.journal){
+      evals.push({id:uid(),paperId:p.id,journalName:p.journal,impactFactor:'',tiersCn:{cssci:false,cssciEx:false,pku:false,econTop:false},tiersEn:{absStar:0,ssciQ:'',casQ:''},submissionDate:p.submittedDate,myNotes:'',communityNotes:[]});
+      evChanged=true;
+    }
+  });
+  if(evChanged){evaluations=evals;saveAll();}
+  if(!evals.length)return '<div class="ep"><div class="big">📝</div><div class="mg">暂无评价</div><div class="su">先添加投稿论文，然后在此记录期刊评价</div></div>';
+  let h='<div style="background:#fef9c3;border:1px solid #fde047;border-radius:8px;padding:8px 12px;margin-bottom:14px;font-size:12px;color:#854d0e;display:flex;gap:16px;flex-wrap:wrap;align-items:center"><span style="font-weight:700">💡 查询渠道：</span><span>📖 中文期刊等级 → <b>知网</b> / <b>维普</b></span><span style="color:#d97706">|</span><span>🌐 英文期刊等级（ABS星级/SSCI分区/中科院分区）→ <b>LetPub</b></span></div>';
+  evals.forEach(ev=>{
+    const p=papers.find(x=>x.id===ev.paperId);
+    if(!p)return;
+    let cnH='';
+    (ev.communityNotes||[]).forEach((cn,i)=>{
+      cnH+=`<div class="eval-note-item"><div style="font-size:11.5px;line-height:1.5">${esc(cn.content)}</div><div class="src">来源: ${esc(cn.source)} · ${fD(cn.date)} <span style="cursor:pointer;color:#ef4444;margin-left:8px" onclick="delCommunityNote('${ev.id}',${i})">✕</span></div></div>`;
+    });
+    const tc=ev.tiersCn||{cssci:false,cssciEx:false,pku:false,econTop:false};
+    const te=ev.tiersEn||{absStar:0,ssciQ:'',casQ:''};
+    const jn=ev.journalName||p.journal||'';
+    const topJournals=['中国社会科学','管理世界','经济研究','中国工业经济','经济学（季刊）'];
+    const isTop=tc.econTop||topJournals.some(t=>jn.includes(t));
+    const cnTiers=(isTop?`<span class="tier-tag-top ${tc.econTop||isTop?'active':''}" data-t="econTop" onclick="toggleTier('${ev.id}','cn','econTop',this)">👑经济Top</span>`:'')
+      +`<span class="tier-tag ${tc.cssci?'active':''}" data-t="cssci" onclick="toggleTier('${ev.id}','cn','cssci',this)">CSSCI</span><span class="tier-tag ${tc.cssciEx?'active':''}" data-t="cssciEx" onclick="toggleTier('${ev.id}','cn','cssciEx',this)">CSSCI扩展</span><span class="tier-tag ${tc.pku?'active':''}" data-t="pku" onclick="toggleTier('${ev.id}','cn','pku',this)">北大核心</span>`;
+    const absStarLabels={0:'',1:'1星',2:'2星',3:'3星',4:'4星',5:'4*超四星'};
+    const absStars=[1,2,3,4,5].map(s=>`<option value="${s}" ${te.absStar===s?'selected':''}>${absStarLabels[s]}</option>`).join('');
+    const qOptions=[{v:'Q1',l:'Q1'},{v:'Q2',l:'Q2'},{v:'Q3',l:'Q3'},{v:'Q4',l:'Q4'}].map(q=>`<option value="${q.v}" ${te.ssciQ===q.v?'selected':''}>${q.l}</option>`).join('');
+    const casOptions=qOptions.replace(/ssciQ/g,'casQ');
+    const tierDisplay=(tc.econTop||isTop?'👑经济Top ':'')+(tc.cssci?'CSSCI ':'')+(tc.cssciEx?'CSSCI扩展 ':'')+(tc.pku?'北大核心 ':'')+(te.absStar?`ABS${absStarLabels[te.absStar]} `:'')+(te.ssciQ?`SSCI ${te.ssciQ} `:'')+(te.casQ?`中科院${te.casQ} `:'');
+    const cnkiUrl=`https://kns.cnki.net/kns8s/defaultresult/index?crossids=YSTT4HG0%2CLSTPFY1C%2CJUP3MUPD%2CMPMFIG1A%2CWQ0UVIAA%2CBLZOG7CK%2CPWFIRAGL%2CEMRPGLPA%2CNLBO1Z6R%2CNN3FJMUV&korder=LY&kw=${encodeURIComponent(jn)}`;
+    const vpUrl=`https://qikan.cqvip.com/Qikan/Search/Index?from=Qikan_Search_Index&searchWord=${encodeURIComponent(jn)}`;
+    const letpubUrl=`https://letpub.com.cn/index.php?page=journalapp&view=search&searchname=${encodeURIComponent(jn)}&searchissn=&searchfield=&searchimpactlow=&searchimpacthigh=&searchimpacttrend=&searchscitype=&searchcategory1=&searchcategory2=&searchjcrkind=&searchopenaccess=&searchsort=clickcount&searchsortorder=desc&currentsearchpage=1`;
+    h+=`<div class="eval-card"><div class="eval-header"><div><div class="eval-journal">${esc(jn||'未知期刊')}</div><div class="eval-if">影响因子: ${ev.impactFactor||'未填写'} · ${tierDisplay||'未设置等级'} · 投稿: ${fD(p.submittedDate)}</div></div><span class="sbdg">${gs(p.status).emoji} ${gs(p.status).label}</span><span style="cursor:pointer;color:#ef4444;font-size:18px;margin-left:8px;flex-shrink:0" onclick="event.stopPropagation();deleteEvaluation('${ev.id}')" title="删除此评价">🗑️</span></div><div style="display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap;align-items:flex-end"><div class="fg" style="flex:1;min-width:120px;margin-bottom:0"><label class="fl">期刊名称</label><input class="fi" id="evJn_${ev.id}" value="${esc(jn)}" style="font-size:11px" placeholder="输入期刊名后点击查询"></div><div class="fg" style="flex:0 0 90px;margin-bottom:0"><label class="fl">影响因子</label><input class="fi" id="evIf_${ev.id}" value="${esc(ev.impactFactor||'')}" style="font-size:11px" placeholder="e.g. 7.5"></div><button class="ebtn" onclick="queryJournalCnki('${ev.id}')" style="font-size:10px;padding:5px 8px" title="知网查询">🔍知网</button><button class="ebtn" onclick="queryJournalVp('${ev.id}')" style="font-size:10px;padding:5px 8px" title="维普查询">🔍维普</button><button class="ebtn" onclick="queryJournalLetpub('${ev.id}')" style="font-size:10px;padding:5px 8px" title="LetPub查询英文期刊">🔍LetPub</button></div><div style="display:flex;gap:8px;margin-bottom:6px;flex-wrap:wrap;align-items:center"><div style="display:flex;align-items:center;gap:4px"><span style="font-size:10px;font-weight:700;color:var(--t2)">中文:</span>${cnTiers}</div><div style="width:1px;height:20px;background:var(--border)"></div><div style="display:flex;align-items:center;gap:6px"><span style="font-size:10px;font-weight:700;color:var(--t2)">英文:</span><select class="fi" id="evAbs_${ev.id}" style="width:85px;font-size:11px" onchange="saveTierEn('${ev.id}','absStar',this.value)"><option value="0">ABS星级</option>${absStars}</select><select class="fi" id="evSsci_${ev.id}" style="width:70px;font-size:11px" onchange="saveTierEn('${ev.id}','ssciQ',this.value)"><option value="">SSCI分区</option>${qOptions}</select><select class="fi" id="evCas_${ev.id}" style="width:85px;font-size:11px" onchange="saveTierEn('${ev.id}','casQ',this.value)"><option value="">中科院分区</option>${casOptions}</select></div><button class="bsav" onclick="saveEvalInfo('${ev.id}')" style="padding:5px 12px;font-size:11px">保存</button></div><div class="eval-section"><h5>✍️ 我的评价</h5><div class="rich-editor" id="myNotes_${ev.id}" contenteditable="true">${ev.myNotes||''}</div><button class="ebtn" onclick="saveMyNotes('${ev.id}')" style="margin-top:6px;font-size:10px">保存笔记</button></div><div class="eval-section"><h5>💬 他人评价（导师/网友/同行）</h5>${cnH||'<div style="font-size:11px;color:var(--t3)">暂无</div>'}<div style="display:flex;gap:6px;margin-top:8px"><input class="fi" id="cnSrc_${ev.id}" placeholder="来源（导师/知乎/小木虫...）" style="font-size:11px;flex:0 0 120px"><input class="fi" id="cnContent_${ev.id}" placeholder="评价内容..." style="font-size:11px;flex:1"><button class="ebtn" onclick="addCommunityNote('${ev.id}')" style="font-size:10px;flex-shrink:0">添加</button></div></div></div>`;
+  });
+  return h;
+}
+function saveEvalInfo(eid){
+  const ev=evaluations.find(e=>e.id===eid);if(!ev)return;
+  ev.journalName=document.getElementById('evJn_'+eid)?.value||'';
+  ev.impactFactor=document.getElementById('evIf_'+eid)?.value||'';
+  saveAll();toast('期刊信息已保存');
+}
+function toggleTier(eid,type,key,el){
+  const ev=evaluations.find(e=>e.id===eid);if(!ev)return;
+  if(type==='cn'){if(!ev.tiersCn)ev.tiersCn={cssci:false,cssciEx:false,pku:false,econTop:false};ev.tiersCn[key]=!ev.tiersCn[key];el.classList.toggle('active');saveAll();switchMainTab('evaluations');}
+}
+function saveTierEn(eid,key,val){
+  const ev=evaluations.find(e=>e.id===eid);if(!ev)return;
+  if(!ev.tiersEn)ev.tiersEn={absStar:0,ssciQ:'',casQ:''};
+  ev.tiersEn[key]=key==='absStar'?parseInt(val)||0:val;
+  saveAll();switchMainTab('evaluations');
+}
+function queryJournalCnki(eid){
+  const jn=document.getElementById('evJn_'+eid)?.value.trim();
+  if(!jn){toast('请先输入期刊名称','error');return}
+  window.open(`https://kns.cnki.net/kns8s/defaultresult/index?crossids=YSTT4HG0%2CLSTPFY1C%2CJUP3MUPD%2CMPMFIG1A%2CWQ0UVIAA%2CBLZOG7CK%2CPWFIRAGL%2CEMRPGLPA%2CNLBO1Z6R%2CNN3FJMUV&korder=LY&kw=${encodeURIComponent(jn)}`,'_blank');
+}
+function queryJournalVp(eid){
+  const jn=document.getElementById('evJn_'+eid)?.value.trim();
+  if(!jn){toast('请先输入期刊名称','error');return}
+  window.open(`https://qikan.cqvip.com/Qikan/Search/Index?from=Qikan_Search_Index&searchWord=${encodeURIComponent(jn)}`,'_blank');
+}
+function queryJournalLetpub(eid){
+  const jn=document.getElementById('evJn_'+eid)?.value.trim();
+  if(!jn){toast('请先输入期刊名称','error');return}
+  window.open(`https://letpub.com.cn/index.php?page=journalapp&view=search&searchname=${encodeURIComponent(jn)}&searchissn=&searchfield=&searchimpactlow=&searchimpacthigh=&searchimpacttrend=&searchscitype=&searchcategory1=&searchcategory2=&searchjcrkind=&searchopenaccess=&searchsort=clickcount&searchsortorder=desc&currentsearchpage=1`,'_blank');
+}
+function saveMyNotes(eid){
+  const ev=evaluations.find(e=>e.id===eid);if(!ev)return;
+  ev.myNotes=document.getElementById('myNotes_'+eid)?.innerHTML||'';
+  saveAll();toast('笔记已保存');
+}
+function addCommunityNote(eid){
+  const ev=evaluations.find(e=>e.id===eid);if(!ev)return;
+  const src=document.getElementById('cnSrc_'+eid)?.value.trim();
+  const content=document.getElementById('cnContent_'+eid)?.value.trim();
+  if(!src||!content){toast('请填写来源和内容','error');return}
+  if(!ev.communityNotes)ev.communityNotes=[];
+  ev.communityNotes.push({source:src,content,date:td()});
+  saveAll();toast('已添加');switchMainTab('evaluations');
+}
+function delCommunityNote(eid,idx){
+  const ev=evaluations.find(e=>e.id===eid);if(!ev)return;
+  ev.communityNotes.splice(idx,1);
+  saveAll();toast('已删除');switchMainTab('evaluations');
+}
+function deleteEvaluation(eid){
+  if(!confirm('确认删除该期刊评价记录？'))return;
+  evaluations=evaluations.filter(e=>e.id!==eid);
+  saveAll();
+  if(repo.bound)syncToRepo();
+  toast('评价已删除');switchMainTab('evaluations');
+}
+
+/* ========== 时间线详情 ========== */
+function renderDetail(){
+  const p=papers.find(x=>x.id===detailId);
+  if(!p){detailId=null;render();return}
+  const st=gs(p.status),rl=gr(p.role);
+  const tl=(p.timeline||[]).slice().sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+  const totalDays=p.submittedDate?dB(p.submittedDate,tl.length&&tl[tl.length-1].date?tl[tl.length-1].date:td()):0;
+  let tlH='';
+  tl.forEach((ev,i)=>{
+    let dur='';if(i>0&&tl[i-1].date&&ev.date){const d=dB(tl[i-1].date,ev.date);if(d>0)dur=`间隔 ${d} 天`}
+    tlH+=`<div class="ev"><div class="dot" style="background:${ev.color||'#94a3b8'}"></div><div class="date">${fD(ev.date)}</div><div class="label">${esc(ev.label)}</div>${ev.note?`<div class="note">${esc(ev.note)}</div>`:''}${dur?`<div class="dur">${dur}</div>`:''}</div>`;
+  });
+  if(!tl.length)tlH='<div style="color:var(--t3);font-size:12px;padding:8px 0">暂无记录，点编辑添加</div>';
+
+  // 提醒状态
+  const rem=p.reminder||{};
+  let remInfo='';
+  if(tl.length){
+    const lastDate=tl[tl.length-1].date;
+    const days=dB(lastDate,td());
+    remInfo=`<div style="font-size:11px;color:${days>=14?'#ef4444':'var(--t2)'};margin-bottom:8px">⏱️ 距上次更新 ${days} 天${days>=14?' · ⚠️ 已触发提醒阈值':''} · 提醒周期: ${rem.period||settings.reminderPeriod}天 · ${rem.paused?'⏸️ 已暂停':'✅ 活跃'}</div>`;
+  }
+
+  document.getElementById('app').innerHTML=`<div class="header"><div class="hi"><div class="ha"><div><h1>🧫 稿子菌</h1></div></div></div></div><div class="ct"><div class="det-hd"><div class="bk" id="goBack">← 返回列表</div><h2>${esc(p.title)}</h2><div class="meta"><span class="sbdg" style="background:${st.color}15;color:${st.color};border:1px solid ${st.color}30">${st.emoji} ${st.label}</span><span class="rtag" style="background:${rl.bg};color:${rl.fg};border:1px solid ${rl.bd}">${rl.label}</span>${p.journal?`<span style="font-style:italic">${esc(p.journal)}</span>`:''}${p.manuscriptId?`<span>${esc(p.manuscriptId)}</span>`:''}${totalDays?`<span>共 ${totalDays} 天</span>`:''}</div></div><div class="det-tl"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><h3>📅 完整时间线</h3><button class="ebtn" id="editP">✏️ 编辑</button></div>${remInfo}<div class="ftl">${tlH}</div></div></div>`;
+  document.getElementById('goBack').onclick=()=>{detailId=null;render()};
+  document.getElementById('editP').onclick=()=>{editing=papers.find(x=>x.id===detailId);if(editing)showForm()};
+}
+
+function viewTimeline(id){detailId=id;render()}
+
+/* ========== 工作链（多轮投稿） ========== */
+function getWorkChain(workId){if(!workId)return[];return papers.filter(p=>p.workId===workId).sort((a,b)=>(a.submittedDate||'').localeCompare(b.submittedDate||''))}
+function getWorkRound(p){if(!p.workId)return 0;const chain=getWorkChain(p.workId);return chain.indexOf(p)+1}
+function getWorkCount(workId){if(!workId)return 0;return papers.filter(p=>p.workId===workId).length}
+
+/* ========== 选择/删除操作 ========== */
+function toggleSelectMode(){selectMode=!selectMode;selectedIds.clear();render()}
+function exitSelectMode(){selectMode=false;selectedIds.clear();render()}
+function toggleSelect(id){if(selectedIds.has(id))selectedIds.delete(id);else selectedIds.add(id);render()}
+function batchDelete(){
+  if(selectedIds.size===0)return;
+  if(!confirm(`确定删除选中的 ${selectedIds.size} 项？不可恢复。`))return;
+  if(mainTab==='papers')papers=papers.filter(p=>!selectedIds.has(p.id));
+  else reviews=reviews.filter(r=>!selectedIds.has(r.id));
+  selectedIds.clear();persist();toast(`已删除`);
+}
+function deleteItem(id,type){
+  if(!confirm('确定删除？'))return;
+  if(type==='paper')papers=papers.filter(p=>p.id!==id);
+  else reviews=reviews.filter(r=>r.id!==id);
+  persist();toast('已删除');
+}
+
+/* ========== 审稿完成 ========== */
+function completeReview(rid){
+  const r=reviews.find(x=>x.id===rid);if(!r)return;
+  const dec=prompt('审稿决定？输入：accept(接收)/minor(小修)/major(大修)/reject(拒稿)');
+  if(!dec)return;
+  const decMap={accept:'accept',minor:'minor',major:'major',reject:'reject'};
+  const dk=decMap[dec.toLowerCase()];
+  if(!dk){toast('无效输入','error');return}
+  r.decision=dk;r.status='completed';
+  if(!r.timeline)r.timeline=[];
+  r.timeline.push({id:uid(),date:td(),label:`提交审稿意见: ${gdec(dk).label}`,color:gdec(dk).color,note:''});
+  persist();toast('审稿完成记录已保存');
+}
+
+/* ========== 账号弹窗 ========== */
+function showAccountModal(id,type){
+  const isPaper=type==='paper';
+  const item=(isPaper?papers:reviews).find(x=>x.id===id);
+  if(!item||!item.account)return;
+  const ov=document.createElement('div');ov.className='mo';
+  ov.innerHTML=`<div class="md" style="max-width:400px"><div class="mh"><h2>🔑 系统账号</h2><button class="xbtn" onclick="this.closest('.mo').remove()">✕</button></div><div class="fg"><label class="fl">用户名/邮箱</label><input class="fi" value="${esc(item.account.username)}" readonly></div><div class="fg"><label class="fl">密码</label><div style="position:relative"><input class="fi" type="password" id="accPwd" value="${esc(item.account.password)}" readonly><button onclick="togglePwd()" style="position:absolute;right:8px;top:8px;background:none;border:none;cursor:pointer;color:var(--t3)">👁️</button></div></div><div style="display:flex;gap:8px;margin-top:16px"><button class="bcan" onclick="this.closest('.mo').remove()">关闭</button><button class="bsav" onclick="copyPwd('${esc(item.account.password)}');this.closest('.mo').remove()">复制密码</button></div></div>`;
+  document.body.appendChild(ov);
+  ov.onclick=e=>{if(e.target===ov)ov.remove()};
+  function togglePwd(){const inp=document.getElementById('accPwd');const btn=inp.nextElementSibling;if(inp.type==='password'){inp.type='text';btn.textContent='🙈'}else{inp.type='password';btn.textContent='👁️'}}
+}
+function copyPwd(pwd){navigator.clipboard.writeText(pwd).then(()=>toast('密码已复制'));}
+
+/* ========== 备份提醒 ========== */
+function getLastBackup(){return localStorage.getItem('gz_lastbk')||localStorage.getItem('pt_lastbk')||''}
+function setLastBackup(){localStorage.setItem('gz_lastbk',td())}
+function needsBackup(){if(repo.bound)return false;if(isDismissed())return false;const lb=getLastBackup();if(!lb)return papers.length>0||reviews.length>0;return dB(lb,td())>=7&&(papers.length>0||reviews.length>0)}
+function dismissBackup(){localStorage.setItem('gz_bkdismiss',td())}
+function isDismissed(){return localStorage.getItem('gz_bkdismiss')===td()}
+function toggleExportDd(){const m=document.getElementById('exportDd');if(!m)return;m.style.display=m.style.display==='none'?'block':'none'}
+document.addEventListener('click',e=>{const m=document.getElementById('exportDd');if(m&&!e.target.closest('.export-dd'))m.style.display='none'});
+
+/* ========== 导入导出 ========== */
+function doExport(){
+  const data={papers,reviews,labels,evaluations,settings,exportDate:td(),version:'稿子菌v6.0'};
+  const bl=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(bl);
+  a.download='稿子菌备份_'+td()+'.json';a.click();
+  setLastBackup();toast('已导出完整备份');
+}
+
+/* ========== 导出仓库数据（ZIP） ========== */
+function createZip(files){
+  /* 极简ZIP生成器（Store无压缩），无外部依赖 */
+  const enc=new TextEncoder();
+  const entries=[];let offset=0;
+  for(const f of files){
+    const data=typeof f.data==='string'?enc.encode(f.data):new Uint8Array(f.data);
+    const name=enc.encode(f.name);
+    const crc=crc32(data);
+    entries.push({name,data,crc,offset});
+    offset+=30+name.length+data.length;
+  }
+  let cdSize=0;
+  for(const e of entries)cdSize+=46+enc.encode(e.name).length;
+  const buf=new ArrayBuffer(offset+22+cdSize);
+  const v=new DataView(buf);const u8=new Uint8Array(buf);
+  let pos=0;
+  function w8(val){u8[pos++]=val}
+  function w16(val){v.setUint16(pos,val,true);pos+=2}
+  function w32(val){v.setUint32(pos,val,true);pos+=4}
+  for(const e of entries){
+    const name=enc.encode(e.name);const data=e.data;
+    w32(0x04034b50);w16(20);w16(0);w16(0);w16(0);w16(0);w32(e.crc);w32(data.length);w32(data.length);
+    w16(name.length);w16(0);u8.set(name,pos);pos+=name.length;
+    u8.set(data,pos);pos+=data.length;
+  }
+  for(const e of entries){
+    const name=enc.encode(e.name);
+    w32(0x02014b50);w16(20);w16(20);w16(0);w16(0);w16(0);w16(0);w32(e.crc);w32(e.data.length);w32(e.data.length);
+    w16(name.length);w16(0);w16(0);w16(0);w16(0);w32(0);w32(e.offset);
+    u8.set(name,pos);pos+=name.length;
+  }
+  w32(0x05054b50);w16(0);w16(0);w16(entries.length);w16(entries.length);w32(cdSize);w32(cdOffset);w16(0);
+  return new Blob([buf],{type:'application/zip'});
+}
+function crc32(data){
+  let c=0xFFFFFFFF;
+  for(let i=0;i<data.length;i++){c^=data[i];for(let j=0;j<8;j++)c=(c>>>1)^(c&1?0xEDB88320:0)}
+  return(c^0xFFFFFFFF)>>>0;
+}
+async function doExportRepo(){
+  const files=[];
+  /* _稿子菌配置.json */
+  files.push({name:'稿子菌仓库/_稿子菌配置.json',data:JSON.stringify({labels,settings,exportDate:td(),version:'稿子菌v6.0'},null,2)});
+  /* 投稿/ */
+  for(const p of papers)files.push({name:'稿子菌仓库/投稿/'+paperFN(p),data:JSON.stringify(p,null,2)});
+  /* 审稿/ */
+  for(const r of reviews)files.push({name:'稿子菌仓库/审稿/'+reviewFN(r),data:JSON.stringify(r,null,2)});
+  /* 评价/ */
+  for(const ev of evaluations)files.push({name:'稿子菌仓库/评价/'+evalFN(ev),data:JSON.stringify(ev,null,2)});
+  if(!files.length){toast('没有数据可导出','error');return}
+  const zip=createZip(files);
+  const a=document.createElement('a');a.href=URL.createObjectURL(zip);
+  a.download='稿子菌仓库_'+td()+'.zip';a.click();
+  toast(`已导出仓库数据（${papers.length}投稿 + ${reviews.length}审稿 + ${evaluations.length}评价）`);
+  setLastBackup();
+}
+
+function doImport(){
+  const inp=document.createElement('input');inp.type='file';inp.accept='.json';
+  inp.onchange=e=>{
+    const f=e.target.files[0];if(!f)return;
+    const r=new FileReader();
+    r.onload=()=>{
+      try{
+        const d=JSON.parse(r.result);
+        if(d.papers&&Array.isArray(d.papers)){
+          if(confirm(`导入 ${d.papers.length} 条投稿 + ${(d.reviews||[]).length} 条审稿？\n\n确定=合并 取消=替换`)){
+            const pids=new Set(papers.map(p=>p.id));const rids=new Set(reviews.map(r=>r.id));
+            papers=[...papers,...d.papers.filter(x=>!pids.has(x.id))];
+            if(d.reviews)reviews=[...reviews,...d.reviews.filter(x=>!rids.has(x.id))];
+          }else{
+            papers=d.papers||[];
+            if(d.reviews)reviews=d.reviews;
+          }
+          if(d.labels)labels=d.labels;
+          if(d.evaluations)evaluations=d.evaluations||[];
+          if(d.settings)settings=d.settings;
+          papers.forEach(p=>{if(!fileStore.papers[p.id])fileStore.papers[p.id]=[];ensureEvalForPaper(p)});
+          persist();toast('导入成功');
+        }else if(Array.isArray(d)){
+          if(confirm('检测到旧版数据，是否导入？')){
+            papers=d;papers.forEach(p=>{if(!fileStore.papers[p.id])fileStore.papers[p.id]=[];ensureEvalForPaper(p)});persist();toast('已导入旧版');
+          }
+        }else if(d.papers===undefined&&!Array.isArray(d)){
+          const arr=Object.values(d).filter(v=>v&&typeof v==='object'&&v.title&&v.journal);
+          if(arr.length&&confirm(`从备份中检测到 ${arr.length} 条记录，导入？`)){
+            papers=[...papers,...arr.filter(x=>!papers.find(p=>p.title===x.title))];
+            papers.forEach(p=>{if(!fileStore.papers[p.id])fileStore.papers[p.id]=[];ensureEvalForPaper(p)});persist();toast(`导入 ${arr.length} 条`);
+          }
+        }
+        else{alert('格式不正确')}
+      }catch(er){alert('解析失败: '+er.message)}
+    };
+    r.readAsText(f);
+  };
+  inp.click();
+}
+
+/* ========== 论文表单（完整） ========== */
+function showForm(){
+  if(!editing){rmF();return}
+  const isN=editing==='new';
+  if(mainTab==='reviews'){showReviewForm(isN)}else{showPaperForm(isN)}
+}
+function showPaperForm(isN){
+  const p=isN?{id:'',title:'',journal:'',role:'first',status:'preparing',trackingUrl:'',manuscriptId:'',coAuthors:'',submittedDate:'',notes:'',priority:1,tags:[],timeline:[],workId:'',deadline:'',account:{},files:[],reminder:{enabled:true,period:settings.reminderPeriod,paused:false}}:{...editing,timeline:[...(editing.timeline||[])],tags:[...(editing.tags||[])],files:[...(editing.files||[])],reminder:{...{enabled:true,period:settings.reminderPeriod,paused:false},...(editing.reminder||{})}};
+  let ov=document.getElementById('f-ov');if(!ov){ov=document.createElement('div');ov.id='f-ov';ov.className='mo';document.body.appendChild(ov)}
+  function rf(){
+    let so='';ST.forEach(s=>{const ac=p.status===s.key;so+=`<button type="button" class="sop ${ac?'ac':''}" data-sk="${s.key}" style="${ac?`border-color:${s.color};color:${s.color};background:${s.color}15`:''}">${s.emoji} ${s.label}</button>`});
+    let ro='';RL.forEach(r=>{ro+=`<option value="${r.key}" ${p.role===r.key?'selected':''}>${r.label}</option>`});
+    const tl=(p.timeline||[]).slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+    let tlH='';tl.forEach(ev=>{tlH+=`<div class="tl-ev"><div class="dot" style="background:${ev.color||'#94a3b8'}"></div><div class="date">${fD(ev.date)}</div><div class="label">${esc(ev.label)}</div>${ev.note?`<div class="note">${esc(ev.note)}</div>`:''}<button class="del-ev" data-evid="${ev.id}">✕</button></div>`});
+    let tagH='';(p.tags||[]).forEach((t,i)=>{tagH+=`<span class="cs-tag">${esc(t)}<span class="x" data-ti="${i}">✕</span></span>`});
+    let dlH='';labels.forEach(l=>{dlH+=`<option value="${esc(l)}">`});
+    const workIds=[...new Set(papers.filter(x=>x.workId&&x.id!==p.id).map(x=>x.workId))];
+    let workOpts='<option value="">（不关联，独立投稿）</option><option value="__new__">+ 创建新作品组</option>';
+    workIds.forEach(wid=>{const first=papers.find(x=>x.workId===wid);const sel=p.workId===wid?'selected':'';workOpts+=`<option value="${wid}" ${sel}>${esc((first?.title||'').slice(0,30))} (${getWorkCount(wid)}轮)</option>`});
+    ov.innerHTML=`<div class="md"><div class="mh"><h2>${isN?'📄 新建投稿':'✏️ 编辑投稿'}</h2><button class="xbtn" id="fX">✕</button></div><div>
+    <div class="fg"><label class="fl">论文标题 *</label><input class="fi" id="fT" value="${esc(p.title)}" placeholder="输入论文标题..."></div>
+    <div class="fr"><div class="fg"><label class="fl">目标期刊</label><input class="fi" id="fJ" value="${esc(p.journal)}" placeholder="e.g. 经济研究..."></div><div class="fg nw"><label class="fl">作者身份</label><select class="fi" id="fR">${ro}</select></div></div>
+    <div class="fg"><label class="fl">当前状态</label><div class="so" id="fSO">${so}</div></div>
+    <div class="fr"><div class="fg"><label class="fl">稿件编号</label><input class="fi" id="fM" value="${esc(p.manuscriptId)}" placeholder="MS-2026-XXXX"></div><div class="fg nw2"><label class="fl">优先级</label><select class="fi" id="fPr"><option value="1" ${(p.priority||1)===1?'selected':''}>普通</option><option value="2" ${p.priority===2?'selected':''}>重要</option><option value="3" ${p.priority===3?'selected':''}>紧急</option></select></div><div class="fg nw"><label class="fl">投稿日期</label><input type="date" class="fi" id="fD" value="${p.submittedDate||''}" oninput="clampDateInput(this)"></div></div>
+    <div class="fr"><div class="fg"><label class="fl">追踪网址</label><input class="fi" id="fU" value="${esc(p.trackingUrl)}" placeholder="https://..."></div><div class="fg nw"><label class="fl">修回截止</label><input type="date" class="fi" id="fDL" value="${p.deadline||''}" oninput="clampDateInput(this)"></div></div>
+    <div class="fg"><label class="fl">合作者</label><input class="fi" id="fA" value="${esc(p.coAuthors)}" placeholder="张三, 李四, 王五..."></div>
+    <div class="fg"><label class="fl">标签</label><div class="cs-row" id="tagR">${tagH}<input class="cs-add" id="tagIn" placeholder="+ 添加标签"></div></div>
+    <div class="fg"><label class="fl">备注</label><textarea class="fi" id="fN" rows="2" placeholder="审稿意见、修改计划...">${esc(p.notes||'')}</textarea></div>
+    <div class="fg" style="background:var(--ibg);padding:10px;border-radius:7px"><label class="fl">系统账号（可选）</label>
+      <div class="fr" style="gap:10px"><div class="fg" style="flex:1;margin-bottom:0"><input class="fi" id="fAccUser" value="${esc(p.account?.username||'')}" placeholder="用户名/邮箱"></div><div class="fg" style="flex:1;margin-bottom:0;position:relative"><input class="fi" id="fAccPass" type="password" value="${esc(p.account?.password||'')}" placeholder="密码"><button type="button" onclick="toggleFormPwd('fAccPass')" style="position:absolute;right:8px;top:28px;background:none;border:none;cursor:pointer;font-size:12px;color:var(--t3)">👁️</button></div></div></div>
+    <div class="hist-sec"><h3>🔗 关联作品（同一论文的多轮投稿）</h3><div class="fg"><label class="fl">关联到已有作品</label><select class="fi" id="fWk">${workOpts}</select></div></div>
+    <div class="tls"><h3>📅 时间线 <span style="font-weight:400;font-size:10px;color:var(--t3)">(${(p.timeline||[]).length}条)</span></h3>
+    <datalist id="evLb">${dlH}</datalist>
+    <div class="tl-add"><div class="fg" style="flex:0 0 105px"><label class="fl">日期</label><input type="date" class="fi" id="evD" value="${td()}" oninput="clampDateInput(this)"></div><div class="fg" style="flex:1"><label class="fl">事件</label><input class="fi" id="evL" list="evLb" placeholder="收稿/初审/外审..."></div><div class="fg" style="flex:1"><label class="fl">备注</label><input class="fi" id="evN" placeholder="可选"></div><button class="bsav" id="evA" style="padding:7px 10px;flex-shrink:0">+</button></div>
+    ${tl.length?`<div class="tl-list">${tlH}</div>`:'<div style="font-size:11px;color:var(--t3)">暂无记录</div>'}</div>
+    </div><div class="mf">${!isN?'<button class="bdel" id="fDl">🗑 删除</button>':'<div></div>'}<div style="display:flex;gap:6px"><button class="bcan" id="fCa">取消</button><button class="bsav" id="fSv">${isN?'添加':'保存'}</button></div></div></div>`;
+    ov.onclick=e=>{if(e.target===ov){editing=null;rmF();render()}};
+    document.getElementById('fX').onclick=document.getElementById('fCa').onclick=()=>{editing=null;rmF();render()};
+    document.querySelectorAll('#fSO .sop').forEach(b=>{b.onclick=()=>{p.status=b.dataset.sk;rf()}});
+    document.getElementById('evA').onclick=()=>{const l=document.getElementById('evL').value.trim();if(!l)return;const evDt=document.getElementById('evD').value;if(evDt&&!vD(evDt)){toast('时间线日期格式无效（年份须为4位）','error');return}if(!p.timeline)p.timeline=[];const st2=ST.find(s=>s.label===l);p.timeline.push({id:uid(),date:evDt,label:l,color:st2?st2.color:'#94a3b8',note:document.getElementById('evN').value.trim()});if(!labels.includes(l)){labels.push(l)}sync();rf()};
+    document.querySelectorAll('.del-ev').forEach(b=>{b.onclick=()=>{p.timeline=p.timeline.filter(ev=>ev.id!==b.dataset.evid);sync();rf()}});
+    document.querySelectorAll('.cs-tag .x').forEach(x=>{x.onclick=()=>{p.tags.splice(parseInt(x.dataset.ti),1);sync();rf()}});
+    document.getElementById('tagIn').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();const v=e.target.value.trim();if(v&&!p.tags.includes(v)){p.tags.push(v);sync();rf()}}};
+    document.getElementById('fSv').onclick=()=>{sync();if(!p.title.trim()){toast('请输入标题','error');return};const sd=document.getElementById('fD')?.value;if(sd&&!vD(sd)){toast('投稿日期格式无效（年份须为4位）','error');return}const ddl=document.getElementById('fDL')?.value;if(ddl&&!vD(ddl)){toast('修回截止日期格式无效（年份须为4位）','error');return};const wkVal=document.getElementById('fWk').value;if(wkVal==='__new__'){p.workId=uid()}else if(wkVal){p.workId=wkVal}else{p.workId=''};p.id=p.id||uid();if(isN){papers.push(p);if(!fileStore.papers[p.id])fileStore.papers[p.id]=[];saveFileStore();ensureEvalForPaper(p)}else{const idx=papers.findIndex(x=>x.id===p.id);if(idx>=0)papers[idx]=p};editing=null;rmF();persist()};
+    const dl=document.getElementById('fDl');if(dl)dl.onclick=()=>{if(confirm('确认删除？')){papers=papers.filter(x=>x.id!==p.id);delete fileStore.papers[p.id];saveFileStore();editing=null;rmF();if(repo.bound)syncToRepo();persist()}};
+    function sync(){p.title=document.getElementById('fT')?.value||p.title;p.journal=document.getElementById('fJ')?.value||'';p.role=document.getElementById('fR')?.value||'first';p.manuscriptId=document.getElementById('fM')?.value||'';p.submittedDate=document.getElementById('fD')?.value||'';p.trackingUrl=document.getElementById('fU')?.value||'';p.coAuthors=document.getElementById('fA')?.value||'';p.notes=document.getElementById('fN')?.value||'';p.priority=parseInt(document.getElementById('fPr')?.value||'1');p.deadline=document.getElementById('fDL')?.value||'';if(!p.account)p.account={};p.account.username=document.getElementById('fAccUser')?.value||'';p.account.password=document.getElementById('fAccPass')?.value||''}
+  }
+  document.getElementById('xNew')?.removeAttribute('onclick');
+  rf();setTimeout(()=>document.getElementById('fT')?.focus(),80);
+}
+
+function showReviewForm(isN){
+  const r=isN?{id:'',journal:'',paperTitle:'',round:1,inviteDate:td(),dueDate:'',decision:'',link:'',notes:'',status:'pending',timeline:[],account:{},reviewWorkId:''}:{...editing,timeline:[...(editing.timeline||[])]};
+  let ov=document.getElementById('f-ov');if(!ov){ov=document.createElement('div');ov.id='f-ov';ov.className='mo';document.body.appendChild(ov)}
+  function rf(){
+    let decOpts='';RV_DEC.forEach(d=>{decOpts+=`<option value="${d.key}" ${r.decision===d.key?'selected':''}>${d.emoji} ${d.label}</option>`});
+    const tl=(r.timeline||[]).slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+    let tlH='';tl.forEach(ev=>{tlH+=`<div class="tl-ev"><div class="dot" style="background:${ev.color||'#94a3b8'}"></div><div class="date">${fD(ev.date)}</div><div class="label">${esc(ev.label)}</div>${ev.note?`<div class="note">${esc(ev.note)}</div>`:''}<button class="del-ev" data-evid="${ev.id}">✕</button></div>`});
+    ov.innerHTML=`<div class="md"><div class="mh"><h2>${isN?'📪 新建审稿':'✏️ 编辑审稿'}</h2><button class="xbtn" id="fX">✕</button></div><div>
+    <div class="fg"><label class="fl">审稿期刊 *</label><input class="fi rev" id="rvJ" value="${esc(r.journal)}" placeholder="期刊名称..."></div>
+    <div class="fg"><label class="fl">论文标题</label><input class="fi rev" id="rvT" value="${esc(r.paperTitle)}" placeholder="稿件标题..."></div>
+    <div class="fr"><div class="fg"><label class="fl">邀请日期</label><input type="date" class="fi" id="rvI" value="${r.inviteDate||''}" oninput="clampDateInput(this)"></div><div class="fg"><label class="fl">截止日期</label><input type="date" class="fi" id="rvD" value="${r.dueDate||''}" oninput="clampDateInput(this)"></div><div class="fg nw2"><label class="fl">轮次</label><input type="number" class="fi" id="rvR" value="${r.round||1}" min="1"></div></div>
+    <div class="fg"><label class="fl">审稿决定</label><select class="fi rev" id="rvDec">${decOpts}</select></div>
+    <div class="fg"><label class="fl">审稿系统链接</label><input class="fi rev" id="rvL" value="${esc(r.link)}" placeholder="https://..."></div>
+    <div class="fg"><label class="fl">审稿笔记</label><textarea class="fi" id="rvN" rows="3">${esc(r.notes||'')}</textarea></div>
+    <div class="fg" style="background:var(--ibg);padding:10px;border-radius:7px"><label class="fl">审稿系统账号（可选）</label>
+      <div class="fr" style="gap:10px"><div class="fg" style="flex:1;margin-bottom:0"><input class="fi" id="rvAccUser" value="${esc(r.account?.username||'')}" placeholder="用户名/邮箱"></div><div class="fg" style="flex:1;margin-bottom:0;position:relative"><input class="fi" id="rvAccPass" type="password" value="${esc(r.account?.password||'')}" placeholder="密码"><button type="button" onclick="toggleFormPwd('rvAccPass')" style="position:absolute;right:8px;top:28px;background:none;border:none;cursor:pointer;font-size:12px;color:var(--t3)">👁️</button></div></div></div>
+    <div class="tls"><h3>📅 处理时间线 <span style="font-weight:400;font-size:10px;color:var(--t3)">(${(r.timeline||[]).length}条)</span></h3>
+    <div class="tl-add"><div class="fg" style="flex:0 0 105px"><label class="fl">日期</label><input type="date" class="fi" id="evD" value="${td()}" oninput="clampDateInput(this)"></div><div class="fg" style="flex:1"><label class="fl">事件</label><input class="fi" id="evL" placeholder="收到邀请/接受邀请..."></div><div class="fg" style="flex:1"><label class="fl">备注</label><input class="fi" id="evN" placeholder="可选"></div><button class="bsav rev" id="evA" style="padding:7px 10px;flex-shrink:0">+</button></div>
+    ${tl.length?`<div class="tl-list">${tlH}</div>`:'<div style="font-size:11px;color:var(--t3)">暂无记录</div>'}</div>
+    </div><div class="mf">${!isN?'<button class="bdel" id="fDl">🗑 删除</button>':'<div></div>'}<div style="display:flex;gap:6px"><button class="bcan" id="fCa">取消</button><button class="bsav rev" id="fSv">${isN?'添加':'保存'}</button></div></div></div>`;
+    ov.onclick=e=>{if(e.target===ov){editing=null;rmF();render()}};
+    document.getElementById('fX').onclick=document.getElementById('fCa').onclick=()=>{editing=null;rmF();render()};
+    document.getElementById('evA').onclick=()=>{const l=document.getElementById('evL').value.trim();if(!l)return;const evDt=document.getElementById('evD').value;if(evDt&&!vD(evDt)){toast('时间线日期格式无效（年份须为4位）','error');return}if(!r.timeline)r.timeline=[];r.timeline.push({id:uid(),date:evDt,label:l,color:'#059669',note:document.getElementById('evN').value.trim()});syncR();rf()};
+    document.querySelectorAll('.del-ev').forEach(b=>{b.onclick=()=>{r.timeline=r.timeline.filter(ev=>ev.id!==b.dataset.evid);syncR();rf()}});
+    document.getElementById('fSv').onclick=()=>{syncR();if(!r.journal.trim()){toast('请输入期刊名称','error');return};const ivd=document.getElementById('rvI')?.value;if(ivd&&!vD(ivd)){toast('邀请日期格式无效（年份须为4位）','error');return}const dvd=document.getElementById('rvD')?.value;if(dvd&&!vD(dvd)){toast('截止日期格式无效（年份须为4位）','error');return};r.status=r.decision?'completed':'pending';r.id=r.id||uid();if(isN)reviews.push(r);else{const idx=reviews.findIndex(x=>x.id===r.id);if(idx>=0)reviews[idx]=r};editing=null;rmF();persist()};
+    const dl=document.getElementById('fDl');if(dl)dl.onclick=()=>{if(confirm('确认删除？')){reviews=reviews.filter(x=>x.id!==r.id);editing=null;rmF();persist()}};
+    function syncR(){r.journal=document.getElementById('rvJ')?.value||'';r.paperTitle=document.getElementById('rvT')?.value||'';r.inviteDate=document.getElementById('rvI')?.value||'';r.dueDate=document.getElementById('rvD')?.value||'';r.round=parseInt(document.getElementById('rvR')?.value||'1');r.decision=document.getElementById('rvDec')?.value||'';r.link=document.getElementById('rvL')?.value||'';r.notes=document.getElementById('rvN')?.value||'';const accUser=document.getElementById('rvAccUser');const accPass=document.getElementById('rvAccPass');if(accUser&&accPass){if(!r.account)r.account={};r.account.username=accUser.value;r.account.password=accPass.value}}
+  }
+  rf();setTimeout(()=>document.getElementById('rvJ')?.focus(),80);
+}
+function toggleFormPwd(inputId){const input=document.getElementById(inputId);const btn=input.nextElementSibling;if(input.type==='password'){input.type='text';btn.textContent='🙈'}else{input.type='password';btn.textContent='👁️'}}
+function rmF(){const m=document.getElementById('f-ov');if(m)m.remove()}
+
+/* ========== Tab切换 ========== */
+function switchMainTab(tab){
+  mainTab=tab;search='';view='list';groupBy=(tab==='reviews')?'status':'status';
+  filterYear='';filterMonth='';filterJournal='';
+  detailId=null;editing=null;selectMode=false;selectedIds.clear();
+  if(tab!=='progress')_progressPaperId='';
+  render();
+}
+function switchTab(){}
+
+/* ========== 事件绑定 ========== */
+function bindEvents(){
+  document.querySelectorAll('.tab[data-t]').forEach(b=>{
+    b.onclick=()=>{
+      const t=b.dataset.t;
+      if(t==='papers'){mainTab='papers';search='';view='list';groupBy='status';clearFilters();exitSelectMode()}
+      else if(t==='reviews'){mainTab='reviews';search='';view='list';groupBy='status';clearFilters();exitSelectMode()}
+      else if(t==='progress'){mainTab='progress';view='list'}
+      else if(t==='dashboard'){mainTab='dashboard';view='dashboard'}
+      else{mainTab=t;view='list'}
+      filterYear='';filterMonth='';filterJournal='';detailId=null;editing=null;selectMode=false;selectedIds.clear();
+      render();
+    }
+  });
+  document.querySelectorAll('.tab[data-v]').forEach(b=>{
+    b.onclick=()=>{view=b.dataset.v;render()}
+  });
+  
+  const xNew=document.getElementById('xNew');
+  if(xNew)xNew.onclick=()=>{editing='new';showForm()};
+  
+  const searchInput=document.getElementById('xSch');
+  if(searchInput){
+    searchInput.oninput=e=>{if(searchTimeout)clearTimeout(searchTimeout);searchTimeout=setTimeout(()=>{search=e.target.value;render()},300)};
+  }
+  document.querySelectorAll('.gtog button').forEach(b=>{b.onclick=()=>{groupBy=b.dataset.g;render()}});
+  
+  if(mainTab==='papers'){
+    document.querySelectorAll('.pc[data-eid]').forEach(c=>{
+      c.onclick=e=>{if(e.target.closest('.qb')||e.target.closest('.clk')||e.target.closest('.star')||e.target.closest('.hist-link')||e.target.closest('.cact-btn')||e.target.closest('.pc-select'))return;editing=papers.find(p=>p.id===c.dataset.eid);if(editing)showForm()}
+    });
+    document.querySelectorAll('.qb').forEach(b=>{
+      b.onclick=e=>{e.stopPropagation();const p=papers.find(x=>x.id===b.dataset.id);if(p){p.status=b.dataset.st;if(!p.timeline)p.timeline=[];p.timeline.push({id:uid(),date:td(),label:gs(b.dataset.st).label,color:gs(b.dataset.st).color,note:''});persist()}}
+    });
+    document.querySelectorAll('.star').forEach(s=>{
+      s.onclick=e=>{e.stopPropagation();const p=papers.find(x=>x.id===s.dataset.id);if(p){p.priority=parseInt(s.dataset.pr);persist()}}
+    });
+    document.querySelectorAll('.hist-link').forEach(l=>{
+      l.onclick=e=>{e.stopPropagation();const id=l.dataset.goid;if(id){detailId=id;render()}}
+    });
+  }else if(mainTab==='reviews'){
+    document.querySelectorAll('.pc[data-rid]').forEach(c=>{
+      c.onclick=e=>{if(e.target.closest('.cact-btn')||e.target.closest('.clk')||e.target.closest('.pc-select')||e.target.closest('.hist-link'))return;editing=reviews.find(r=>r.id===c.dataset.rid);if(editing)showForm()}
+    });
+  }
+  
+  const bke=document.getElementById('bkExport');if(bke)bke.onclick=doExport;
+  const bkd=document.getElementById('bkDismiss');if(bkd)bkd.onclick=()=>{dismissBackup();render()};
+}
+
+function updateFilter(type,value){
+  if(type==='year'){filterYear=value;filterMonth=''}else if(type==='month')filterMonth=value;else if(type==='journal')filterJournal=value;
+  render();
+}
+function clearFilters(){filterYear='';filterMonth='';filterJournal='';render()}
+
+/* ========== 初始化 ========== */
+initRepo().then(()=>{initFileStore();loadAll().then(()=>{render();if(repo.bound&&repo.handle){setTimeout(()=>{if(confirm('是否让仓库数据覆盖现有HTML存的数据？'))fullSyncFromRepo()},800)}})});
+</script>
+</body>
+</html>
